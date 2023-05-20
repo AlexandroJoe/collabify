@@ -5,6 +5,7 @@ const Login = (props) => {
     email,
     setEmail,
     password,
+    // confirmation,
     setPassword,
     handleLogin,
     handleSignUp,
@@ -32,6 +33,8 @@ const Login = (props) => {
         <p class="errorMsg">{emailError}</p>
         <label>Password</label>
         <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
+        {/* <label>Confirmation</label>
+        <input type="password" required value={confirmation} onChange={(e) => setPassword(e.target.value)}/> */}
         <p className="errorMsg">{passwordError}</p>
         <div className="btnContainer">
             {hasAccount ? (

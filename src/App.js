@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import fire from "./config/firebase";
+import { fire, fs } from "./config/firebase";
 import Login from "./components/Login";
 import "./App.css";
+import { query, getDocs, collection, where, addDoc } from 'firebase/firestore';
+
 import Dashboard from "./components/Dashboard";
 
 const App = () => {
@@ -63,6 +65,9 @@ const App = () => {
             break;
         }
       });
+    addDoc(collection(fs, "users"), {
+      
+    })
   };
 
   const handleLogout = () => {
@@ -88,6 +93,7 @@ const App = () => {
     <div className="App">
       {user ? (
         <Dashboard handleLogout={handleLogout}/>
+        
       ) : (
         <Login
         email={email}
@@ -105,6 +111,8 @@ const App = () => {
       
       
     </div>
+    
+
   );
 };
 
