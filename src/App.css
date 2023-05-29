@@ -125,3 +125,13 @@ button {
   padding: 8px 0;
   background: #3a2b58;
 }
+
+.btnContainer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.btnContainer button:enabled:hover {
+  background-color: #006eff;
+  color: #ffffff;
+}
