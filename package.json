@@ -10,7 +10,12 @@
     "firebase-admin": "^11.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+<<<<<<< HEAD
     "react-scripts": "^5.0.1",
+=======
+    "react-router-dom": "^6.11.2",
+    "react-scripts": "5.0.1",
+>>>>>>> e6cee63fd3c7ef1c3c5ffc4320badd9372bcebe2
     "web-vitals": "^2.1.4"
   },
   "scripts": {
