@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import fire from "./config/firebase";
+import { fire, fs, auth } from "./config/firebase";
 import Login from "./components/Login";
 import "./App.css";
+import { query, getDocs, collection, where, addDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
 import Dashboard from "./components/Dashboard";
 
 const App = () => {
@@ -45,13 +48,11 @@ const App = () => {
       });
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async (email, password) => {
     cleanErrors();
-    fire
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .catch((err) => {
-        switch (err.code) {
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password).catch((error) => {
+        switch (error.code) {
           case "auth/invalid-email":
             setEmailError("The email address is invalid.");
             break;
@@ -62,7 +63,17 @@ const App = () => {
             setPasswordError("Password should be at least 6 characters");
             break;
         }
+      })
+      const user = res.user;
+      await addDoc(collection(fs, "users"), {
+        uid: user.uid,
+        email,
+        password,
+        team: null
       });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleLogout = () => {
@@ -88,6 +99,7 @@ const App = () => {
     <div className="App">
       {user ? (
         <Dashboard handleLogout={handleLogout}/>
+        
       ) : (
         <Login
         email={email}
@@ -105,6 +117,8 @@ const App = () => {
       
       
     </div>
+    
+
   );
 };
 

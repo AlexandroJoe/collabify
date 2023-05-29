@@ -14,6 +14,10 @@ const Login = (props) => {
     passwordError,
   } = props;
 
+const register = () => {
+  handleSignUp(email, password)
+}
+
   return (
   <section className="login">
     <div>
@@ -41,7 +45,7 @@ const Login = (props) => {
                 </>
             ) : (
                 <>
-                <button onClick={handleSignUp}>Sign up</button>
+                <button onClick={register}>Sign up</button>
                 <p>Have an account ? <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span></p>
                 </>
             )
