@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { fire, fs, auth } from "./config/firebase";
 import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 import "./App.css";
 import { query, getDocs, collection, where, addDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-
-import Dashboard from "./components/Dashboard";
 
 const App = () => {
   const [user, setUser] = useState("");
@@ -14,6 +13,7 @@ const App = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [hasAccount, setHasAccount] = useState(false);
+  const dbuser =  collection(fs, "users");
 
   const cleanInputs = () => {
     setEmail("");
@@ -99,7 +99,6 @@ const App = () => {
     <div className="App">
       {user ? (
         <Dashboard handleLogout={handleLogout}/>
-        
       ) : (
         <Login
         email={email}
@@ -114,11 +113,7 @@ const App = () => {
         passwordError={passwordError}
       />
       )}
-      
-      
     </div>
-    
-
   );
 };
 
