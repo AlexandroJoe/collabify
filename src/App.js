@@ -7,7 +7,7 @@ import { query, getDocs, collection, where, addDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const App = () => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -85,13 +85,19 @@ const App = () => {
       if (user) {
         cleanInputs();
         setUser(user);
+        localStorage.setItem("user", JSON.stringify(user)); // Store user in localStorage
       } else {
-        setUser("");
+        setUser(null);
+        localStorage.removeItem("user"); // Remove user from localStorage
       }
     });
   };
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
     authListener();
   }, []);
 
