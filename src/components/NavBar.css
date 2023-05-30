@@ -1,0 +1,40 @@
+body {
+  background-color: #3b3d42;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, #0077b6 0%, #f9346c 75%);
+  color: #fff;
+  border-bottom: 1px solid #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left {
+  font-weight: bold;
+}
+
+.navbar-middle {
+  font-family: "Expletus Sans", sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-date {
+  margin-right: 10px;
+}
+
+.navbar-user-icon {
+  font-size: 24px;
+  margin-left: 10px;
+  color: #333;
+}
