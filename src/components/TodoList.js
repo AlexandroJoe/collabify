@@ -3,8 +3,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import _ from "lodash";
 import { v4 as uuid } from "uuid";
+import NavBar from "./NavBar";
 
-function TodoList() {
+function TodoList({ handleLogout }) {
   const [text, setText] = useState("");
   const [state, setState] = useState({
     todo: {
@@ -199,10 +200,11 @@ function TodoList() {
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, [editingItems]);
+  }, [editingItems, handleClickOutside]);
 
   return (
     <div className="TodoList">
+      <NavBar welcomeText={"Bienvenue to your todo list!"} handleLogout={handleLogout} />
       <h1>Todo-wall</h1>
       <div className="adding">
         <div>

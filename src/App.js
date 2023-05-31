@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import { fire, fs, auth } from "./config/firebase";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import TodoList from "./components/TodoList";
+import Notes from "./components/Notes";
 import "./App.css";
-import { query, getDocs, collection, where, addDoc } from 'firebase/firestore';
+import { query, getDocs, collection, where, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const App = () => {
@@ -12,8 +20,10 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [hasAccount, setHasAccount] = useState(false);
-  const dbuser =  collection(fs, "users");
+  const [hasAccount, setHasAccount] = useState(true);
+  const dbuser = collection(fs, "users");
+
+  const navigate = useNavigate();
 
   const cleanInputs = () => {
     setEmail("");
@@ -44,6 +54,8 @@ const App = () => {
           case "auth/wrong-password":
             setPasswordError("Wrong password. Try again");
             break;
+          default:
+            setEmailError("An error occurred. Please try again.");
         }
       });
   };
@@ -51,25 +63,31 @@ const App = () => {
   const handleSignUp = async (email, password) => {
     cleanErrors();
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password).catch((error) => {
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      ).catch((error) => {
         switch (error.code) {
           case "auth/invalid-email":
             setEmailError("The email address is invalid.");
             break;
           case "auth/email-already-in-use":
-            setEmailError("The email address is already in use. Login to your account");
+            setEmailError(
+              "The email address is already in use. Login to your account"
+            );
             break;
           case "auth/weak-password":
             setPasswordError("Password should be at least 6 characters");
             break;
         }
-      })
+      });
       const user = res.user;
       await addDoc(collection(fs, "users"), {
         uid: user.uid,
         email,
         password,
-        team: null
+        team: null,
       });
     } catch (error) {
       console.log(error);
@@ -78,6 +96,8 @@ const App = () => {
 
   const handleLogout = () => {
     fire.auth().signOut();
+    navigate("/", { replace: true });
+    console.log("clicked");
   };
 
   const authListener = () => {
@@ -101,24 +121,52 @@ const App = () => {
     authListener();
   }, []);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    authListener();
+  }, []);
+
   return (
     <div className="App">
-      {user ? (
-        <Dashboard handleLogout={handleLogout}/>
-      ) : (
-        <Login
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-        handleLogin={handleLogin}
-        handleSignUp={handleSignUp}
-        hasAccount={hasAccount}
-        setHasAccount={setHasAccount}
-        emailError={emailError}
-        passwordError={passwordError}
-      />
-      )}
+      <Routes>
+        {user ? (
+          <>
+            <Route
+              path="/"
+              element={<Dashboard handleLogout={handleLogout} />}
+            />
+            <Route
+              path="/todo"
+              element={<TodoList handleLogout={handleLogout} />}
+            />
+            <Route
+              path="/notes"
+              element={<Notes handleLogout={handleLogout} />}
+            />
+          </>
+        ) : (
+          <Route
+            path="/"
+            element={
+              <Login
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                handleLogin={handleLogin}
+                handleSignUp={handleSignUp}
+                hasAccount={hasAccount}
+                setHasAccount={setHasAccount}
+                emailError={emailError}
+                passwordError={passwordError}
+              />
+            }
+          />
+        )}
+      </Routes>
     </div>
   );
 };

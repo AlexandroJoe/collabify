@@ -103,9 +103,15 @@ body {
 .edit-button, .remove-button {
     margin: 10px;
     width: 5rem;
+    height: 2rem;
     border-radius: 10px;
     font-size: 0.9rem;
-    background-color: #37334a;
+    background-color: #c7c5d1;
+}
+
+.edit-button:hover, .remove-button:hover {
+  cursor: pointer;
+  background-color: #918f9b;
 }
 
 .edit-confirm, .edit-cancel {

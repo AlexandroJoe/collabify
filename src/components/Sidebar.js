@@ -20,9 +20,16 @@ const Sidebar = ({
       }
     };
 
+    const handlePopstate = () => {
+      setActiveNote(null);
+    };
+
     sidebarRef.current.addEventListener("click", handleClick);
+    window.addEventListener("popstate", handlePopstate);
+
     return () => {
-      sidebarRef.current.removeEventListener("click", handleClick);
+      sidebarRef.current?.removeEventListener("click", handleClick);
+      window.removeEventListener("popstate", handlePopstate);
     };
   }, [setActiveNote]);
 

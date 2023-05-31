@@ -10,10 +10,12 @@ const Login = (props) => {
     handleSignUp,
     hasAccount,
     setHasAccount,
+    emailError,
+    passwordError,
   } = props;
 
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [emailErrorSU, setEmailErrorSU] = useState("");
+  const [passwordErrorSU, setPasswordErrorSU] = useState("");
   const [confirmError, setConfirmError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -32,9 +34,9 @@ const Login = (props) => {
     const inputEmail = e.target.value;
     setEmail(inputEmail);
     if (!hasAccount && !emailRegex.test(inputEmail)) {
-      setEmailError("Please enter a valid email address");
+      setEmailErrorSU("Please enter a valid email address");
     } else {
-      setEmailError("");
+      setEmailErrorSU("");
     }
   };
 
@@ -42,11 +44,11 @@ const Login = (props) => {
     const inputPassword = e.target.value;
     setPassword(inputPassword);
     if (!hasAccount && !passwordRegex.test(inputPassword)) {
-      setPasswordError(
+      setPasswordErrorSU(
         "Password must contain at least 8 characters, including one numeric digit and one uppercase letter"
       );
     } else {
-      setPasswordError("");
+      setPasswordErrorSU("");
     }
   };
 
@@ -60,40 +62,66 @@ const Login = (props) => {
     }
   };
 
-  const isSignUpDisabled = hasAccount || emailError || passwordError || confirmError;
+  const handleSignToggle = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setEmailErrorSU("");
+    setPasswordErrorSU("");
+    setConfirmError("");
+    setHasAccount(!hasAccount);
+  };
+
+  const isSignUpDisabled =
+    !hasAccount || emailErrorSU || passwordErrorSU || confirmError;
 
   return (
     <section className="login">
-      <div>
-        <h1 className="appName">Collabify</h1>
+      <div className="appName">
+        <h1>Collabify</h1>
       </div>
       <div className="loginContainer">
         {hasAccount ? (
           <>
             <h1 className="title">Login to Collabify</h1>
+            <label>Email</label>
+            <input
+              type="text"
+              autoFocus
+              required
+              value={email}
+              onChange={handleEmailChange}
+            />
+            <p className="errorMsg">{emailError}</p>
+            <label>Password</label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <p className="errorMsg">{passwordError}</p>
           </>
         ) : (
-          <h1 className="title">Join us at Collabify</h1>
-        )}
-        <label>Username</label>
-        <input
-          type="text"
-          autoFocus
-          required
-          value={email}
-          onChange={handleEmailChange}
-        />
-        {!hasAccount && <p className="errorMsg">{emailError}</p>}
-        <label>Password</label>
-        <input
-          type="password"
-          required
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        {!hasAccount && <p className="errorMsg">{passwordError}</p>}
-        {!hasAccount && (
           <>
+            <h1 className="title">Join us at Collabify</h1>
+            <label>Email</label>
+            <input
+              type="text"
+              autoFocus
+              required
+              value={email}
+              onChange={handleEmailChange}
+            />
+            {!hasAccount && <p className="errorMsgSU">{emailErrorSU}</p>}
+            <label>Password</label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={handlePasswordChange}
+            />{" "}
+            {!hasAccount && <p className="errorMsgSU">{passwordErrorSU}</p>}
             <label>Confirm Password</label>
             <input
               type="password"
@@ -110,7 +138,7 @@ const Login = (props) => {
               <button onClick={handleLogin}>Login</button>
               <p>
                 Don't have an account?{" "}
-                <span onClick={() => setHasAccount(!hasAccount)}>Sign up</span>
+                <span onClick={handleSignToggle}>Sign up</span>
               </p>
             </>
           ) : (
@@ -119,8 +147,7 @@ const Login = (props) => {
                 Sign up
               </button>
               <p>
-                Have an account?{" "}
-                <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span>
+                Have an account? <span onClick={handleSignToggle}>Sign in</span>
               </p>
             </>
           )}
