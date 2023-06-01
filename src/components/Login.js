@@ -92,7 +92,7 @@ const Login = (props) => {
               value={email}
               onChange={handleEmailChange}
             />
-            <p className="errorMsg">{emailError}</p>
+            {email && <p className="errorMsg">{emailError}</p>}
             <label>Password</label>
             <input
               type="password"
@@ -100,7 +100,7 @@ const Login = (props) => {
               value={password}
               onChange={handlePasswordChange}
             />
-            <p className="errorMsg">{passwordError}</p>
+            {password && <p className="errorMsg">{passwordError}</p>}
           </>
         ) : (
           <>
@@ -113,7 +113,7 @@ const Login = (props) => {
               value={email}
               onChange={handleEmailChange}
             />
-            {!hasAccount && <p className="errorMsgSU">{emailErrorSU}</p>}
+            {!hasAccount && email && <p className="errorMsgSU">{emailErrorSU}</p>}
             <label>Password</label>
             <input
               type="password"
@@ -121,7 +121,7 @@ const Login = (props) => {
               value={password}
               onChange={handlePasswordChange}
             />{" "}
-            {!hasAccount && <p className="errorMsgSU">{passwordErrorSU}</p>}
+            {!hasAccount && password && <p className="errorMsgSU">{passwordErrorSU}</p>}
             <label>Confirm Password</label>
             <input
               type="password"
@@ -129,7 +129,7 @@ const Login = (props) => {
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
             />
-            <p className="errorMsg">{confirmError}</p>
+            {confirmPassword && <p className="errorMsg">{confirmError}</p>}
           </>
         )}
         <div className="btnContainer">
