@@ -18,11 +18,11 @@ const Dashboard = ({ handleLogout }) => {
         <h1>Your Dashboard</h1>
       </div>
       <div className="dashboard-buttons">
-        <Link to="/todo" className="dashboard-button-link dashboard-button">
+        <Link to="todo" className="dashboard-button-link dashboard-button">
           <FontAwesomeIcon icon={faEdit} className="dashboard-icon" />
           <span className="dashboard-button-text">Todo</span>
         </Link>
-        <Link to="/notes" className="dashboard-button-link dashboard-button">
+        <Link to="notes" className="dashboard-button-link dashboard-button">
           <FontAwesomeIcon icon={faStickyNote} className="dashboard-icon" />
           <span className="dashboard-button-text">Notes</span>
         </Link>

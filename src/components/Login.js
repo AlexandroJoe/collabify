@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import logo from "./logo.png";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = (props) => {
   const {
@@ -14,6 +16,8 @@ const Login = (props) => {
     emailError,
     passwordError,
   } = props;
+
+  const navigate = useNavigate();
 
   const [emailErrorSU, setEmailErrorSU] = useState("");
   const [passwordErrorSU, setPasswordErrorSU] = useState("");
@@ -83,14 +87,19 @@ const Login = (props) => {
     handleLogin();
   };
 
+  const goBack = () => {
+    navigate("/", { replace: true });
+    console.log("hello");
+  }
+
   const isSignUpDisabled =
     !hasAccount || emailErrorSU || passwordErrorSU || confirmError;
 
   return (
     <section className="login">
-      <div className="appName">
+      <div className="appName" onClick={goBack}>
         <img src={logo} alt="Logo" />
-        <h1>Collabify</h1>
+        <h1>Collabify </h1>
       </div>
       <div className="loginContainer">
         {hasAccount ? (
@@ -125,7 +134,7 @@ const Login = (props) => {
               value={email}
               onChange={handleEmailChange}
             />
-            {!hasAccount && showError && email && (
+            {!hasAccount && email && (
               <p className="errorMsgSU">{emailErrorSU}</p>
             )}
             <label>Password</label>
@@ -135,7 +144,7 @@ const Login = (props) => {
               value={password}
               onChange={handlePasswordChange}
             />
-            {!hasAccount && showError && password && (
+            {!hasAccount && password && (
               <p className="errorMsgSU">{passwordErrorSU}</p>
             )}
             <label>Confirm Password</label>
@@ -145,7 +154,7 @@ const Login = (props) => {
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
             />
-            {showError && confirmPassword && (
+            {confirmPassword && (
               <p className="errorMsg">{confirmError}</p>
             )}
           </>

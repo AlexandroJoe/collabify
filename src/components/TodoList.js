@@ -215,6 +215,7 @@ function TodoList({ handleLogout }) {
         <div className="main-container">
           <h1>Todo-wall</h1>
           <div className="adding">
+            <div className="inputs">
             <div>
               <label htmlFor="itemName">Item Name: </label>
               <input
@@ -242,6 +243,7 @@ function TodoList({ handleLogout }) {
                   }
                 }}
               />
+            </div>
             </div>
             <div>
               <button

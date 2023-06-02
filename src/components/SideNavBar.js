@@ -14,20 +14,20 @@ const SideNavBar = () => {
   return (
     <nav className="sideNavBar">
       <ul className="nav-menu-items">
-        <li className={`nav-item ${isActivePage("/") ? "active" : ""}`}>
-          <Link to={"/"} className="nav-link">
+        <li className={`nav-item ${isActivePage("/collabify") ? "active" : ""}`}>
+          <Link to={"/collabify"} className="nav-link">
             <FaHome className="icon" />
             <span className="nav-text">Dashboard</span>
           </Link>
         </li>
         <li className={`nav-item ${isActivePage("/todo") ? "active" : ""}`}>
-          <Link to={"/todo"} className="nav-link">
+          <Link to={"/collabify/todo"} className="nav-link">
             <FaEdit className="icon" />
             <span className="nav-text">TodoList</span>
           </Link>
         </li>
         <li className={`nav-item ${isActivePage("/notes") ? "active" : ""}`}>
-          <Link to={"/notes"} className="nav-link">
+          <Link to={"/collabify/notes"} className="nav-link">
             <FaStickyNote className="icon" />
             <span className="nav-text">Notepad</span>
           </Link>
