@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
   faStickyNote,
-  faCommentAlt,
   faProjectDiagram,
 } from "@fortawesome/free-solid-svg-icons";
+import { AiFillRobot } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 import NavBar from "./NavBar";
@@ -14,6 +14,9 @@ const Dashboard = ({ handleLogout }) => {
   return (
     <div className="dashboard">
       <NavBar welcomeText={"Welcome back!"} handleLogout={handleLogout} />
+      <div className="title">
+        <h1>Your Dashboard</h1>
+      </div>
       <div className="dashboard-buttons">
         <Link to="/todo" className="dashboard-button-link dashboard-button">
           <FontAwesomeIcon icon={faEdit} className="dashboard-icon" />
@@ -24,7 +27,7 @@ const Dashboard = ({ handleLogout }) => {
           <span className="dashboard-button-text">Notes</span>
         </Link>
         <Link to="/chat" className="dashboard-button-link dashboard-button">
-          <FontAwesomeIcon icon={faCommentAlt} className="dashboard-icon" />
+          <AiFillRobot className="dashboard-icon" />
           <span className="dashboard-button-text">Chat with AI</span>
         </Link>
         <Link to="/mind-map" className="dashboard-button-link dashboard-button">

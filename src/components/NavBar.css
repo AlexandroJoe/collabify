@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(to bottom, #0077b6 0%, #f9346c 75%);
-  color: #fff;
+  color: #ffffff;
   border-bottom: 1px solid #fff;
   padding: 10px 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -19,10 +19,17 @@
   left: 50%; 
   transform: translateX(-50%);
   font-family: "Expletus Sans", sans-serif;
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   font-style: italic;
+  color: black;
 }
+
+.navbar-middle img {
+  width: 40px;
+  margin-right: 10px;
+}
+
 
 .navbar-right {
   display: flex;

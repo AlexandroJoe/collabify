@@ -10,6 +10,8 @@ const Sidebar = ({
   const sidebarRef = useRef(null);
 
   useEffect(() => {
+    const sidebarRefCurrent = sidebarRef.current;
+
     const handleClick = (event) => {
       const clickedNote = event.target.closest(".sidebar-note");
       if (clickedNote) {
@@ -24,11 +26,11 @@ const Sidebar = ({
       setActiveNote(null);
     };
 
-    sidebarRef.current.addEventListener("click", handleClick);
+    sidebarRefCurrent.addEventListener("click", handleClick);
     window.addEventListener("popstate", handlePopstate);
 
     return () => {
-      sidebarRef.current?.removeEventListener("click", handleClick);
+      sidebarRefCurrent?.removeEventListener("click", handleClick);
       window.removeEventListener("popstate", handlePopstate);
     };
   }, [setActiveNote]);

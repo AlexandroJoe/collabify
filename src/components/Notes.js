@@ -4,6 +4,7 @@ import Main from "./Main";
 import Sidebar from "./Sidebar";
 import { v4 as uuid } from "uuid";
 import NavBar from "./NavBar";
+import SideNavBar from "./SideNavBar";
 
 function Notes({ handleLogout }) {
   const [notes, setNotes] = useState([]);
@@ -17,7 +18,7 @@ function Notes({ handleLogout }) {
       lastModified: Date.now(),
     };
 
-    setNotes([newNote, ...notes]); //transfering every new notes into our notes
+    setNotes([newNote, ...notes]); // transferring every new note into our notes
   };
 
   const onUpdateNote = (updatedNote) => {
@@ -38,25 +39,30 @@ function Notes({ handleLogout }) {
 
   const getActiveNote = () => {
     return notes.find((note) => note.id === activeNote);
-  }; //find the note to send it to main
+  }; // find the note to send it to the Main component
 
   return (
-    <>
-      <NavBar
-        welcomeText={"Welcome to very own notepad!"}
-        handleLogout={handleLogout}
-      />
-      <div className="Notes">
-        <Sidebar
-          notes={notes}
-          onAddNote={onAddNote}
-          onDeleteNote={onDeleteNote}
-          activeNote={activeNote}
-          setActiveNote={setActiveNote}
-        />
-        <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} />
+    <div className="notes-container">
+      <div className="navBarS">
+        <SideNavBar />
       </div>
-    </>
+      <div className="main-content">
+        <NavBar
+          welcomeText={"Welcome to your own notepad!"}
+          handleLogout={handleLogout}
+        />
+        <div className="main-container">
+          <Sidebar
+            notes={notes}
+            onAddNote={onAddNote}
+            onDeleteNote={onDeleteNote}
+            activeNote={activeNote}
+            setActiveNote={setActiveNote}
+          />
+          <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} />
+        </div>
+      </div>
+    </div>
   );
 }
 

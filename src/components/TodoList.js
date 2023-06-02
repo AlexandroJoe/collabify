@@ -4,6 +4,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import NavBar from "./NavBar";
+import SideNavBar from "./SideNavBar";
 
 function TodoList({ handleLogout }) {
   const [text, setText] = useState("");
@@ -21,7 +22,6 @@ function TodoList({ handleLogout }) {
       items: [],
     },
   });
-  
 
   const [editingItems, setEditingItems] = useState({});
   const [lastFocusedInput, setLastFocusedInput] = useState(null);
@@ -204,174 +204,202 @@ function TodoList({ handleLogout }) {
 
   return (
     <div className="TodoList">
-      <NavBar welcomeText={"Bienvenue to your todo list!"} handleLogout={handleLogout} />
-      <h1>Todo-wall</h1>
-      <div className="adding">
-        <div>
-          <label htmlFor="itemName">Item Name: </label>
-          <input
-            type="text"
-            id="itemName"
-            placeholder="Add Item Name"
-            ref={addNameInputRef}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                addDueDateInputRef.current.focus();
-              }
-            }}
-            onChange={(e) => setText(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="dueDate">Due Date: </label>
-          <input
-            type="date"
-            id="dueDate"
-            ref={addDueDateInputRef}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                addItem(text, addDueDateInputRef.current.value);
-              }
-            }}
-          />
-        </div>
-        <div>
-          <button
-            onClick={() => addItem(text, addDueDateInputRef.current.value)}
-          >
-            Add
-          </button>
-        </div>
-      </div>
+      <SideNavBar />
+      <div className="main-content">
+        <NavBar
+          welcomeText={"Bienvenue to your todo list!"}
+          handleLogout={handleLogout}
+        />
+        <div className="main-container">
+          <h1>Todo-wall</h1>
+          <div className="adding">
+            <div>
+              <label htmlFor="itemName">Item Name: </label>
+              <input
+                type="text"
+                id="itemName"
+                placeholder="Add Item Name"
+                ref={addNameInputRef}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    addDueDateInputRef.current.focus();
+                  }
+                }}
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="dueDate">Due Date: </label>
+              <input
+                type="date"
+                id="dueDate"
+                ref={addDueDateInputRef}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    addItem(text, addDueDateInputRef.current.value);
+                  }
+                }}
+              />
+            </div>
+            <div>
+              <button
+                onClick={() => addItem(text, addDueDateInputRef.current.value)}
+              >
+                Add
+              </button>
+            </div>
+          </div>
 
-      <div className="list">
-        <DragDropContext onDragEnd={handleDragEnd}>
-          {_.map(state, (data, key) => {
-            return (
-              <div key={key} className="column">
-                <h3>{data.title}</h3>
-                <Droppable droppableId={key}>
-                  {(provided) => {
-                    return (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        className="droppable-col"
-                      >
-                        {data.items.map((el, index) => {
-                          const isCompleted = key === "done";
-                          const isEditing = !!editingItems[el.id];
-                          const canEdit =
-                            !isCompleted &&
-                            (key === "todo" || key === "in-progress");
-                          const canRemove =
-                            !isEditing && (isCompleted || key !== "done");
+          <div className="list">
+            <DragDropContext onDragEnd={handleDragEnd}>
+              {_.map(state, (data, key) => {
+                return (
+                  <div key={key} className="column">
+                    <h3>{data.title}</h3>
+                    <Droppable droppableId={key}>
+                      {(provided) => {
+                        return (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className="droppable-col"
+                          >
+                            {data.items.map((el, index) => {
+                              const isCompleted = key === "done";
+                              const isEditing = !!editingItems[el.id];
+                              const canEdit =
+                                !isCompleted &&
+                                (key === "todo" || key === "in-progress");
+                              const canRemove =
+                                !isEditing && (isCompleted || key !== "done");
 
-                          return (
-                            <Draggable
-                              key={el.id}
-                              draggableId={el.id}
-                              index={index}
-                            >
-                              {(provided, snapshot) => {
-                                const isDragging = snapshot.isDragging;
-                                return (
-                                <div
-                                  id={`item-${el.id}`}
-                                  className={`item${
-                                    isEditing ? " editing" : ""
-                                  } ${
-                                    isDragging ? "item-dragging" : ""
-                                  }`}
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
+                              return (
+                                <Draggable
+                                  key={el.id}
+                                  draggableId={el.id}
+                                  index={index}
                                 >
-                                  {isEditing ? (
-                                    <>
-                                      <input
-                                        type="text"
-                                        className="edit-input"
-                                        value={editingItems[el.id].name}
-                                        onChange={(e) =>
-                                          handleNameInputChange(e, el.id)
-                                        }
-                                        onKeyDown={(e) =>
-                                          handleKeyDown(e, el.id)
-                                        }
-                                        onBlur={(e) => handleBlur(e, el.id)}
-                                        onClick={() => handleInputFocus(el.id)}
-                                      />
-                                      <input
-                                        type="date"
-                                        className="edit-input"
-                                        value={editingItems[el.id].dueDate}
-                                        onChange={(e) =>
-                                          handleDueDateInputChange(e, el.id)
-                                        }
-                                        onKeyDown={(e) =>
-                                          handleKeyDown(e, el.id)
-                                        }
-                                        onBlur={(e) => handleBlur(e, el.id)}
-                                        onClick={() => handleInputFocus(el.id)}
-                                      />
-                                      <button
-                                        className="edit-confirm"
-                                        onClick={() => confirmEditing(el.id)}
+                                  {(provided, snapshot) => {
+                                    const isDragging = snapshot.isDragging;
+                                    return (
+                                      <div
+                                        id={`item-${el.id}`}
+                                        className={`item${
+                                          isEditing ? " editing" : ""
+                                        } ${isDragging ? "item-dragging" : ""}`}
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
                                       >
-                                        &#10004;
-                                      </button>
-                                      <button
-                                        className="edit-cancel"
-                                        onClick={() => cancelEditing(el.id)}
-                                      >
-                                        &#10005;
-                                      </button>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <div>{el.name}</div>
-                                      <div>{"Due date --> "}{el.dueDate}</div>
-                                      {canEdit && (
-                                        <button
-                                          className="edit-button"
-                                          onClick={() =>
-                                            startEditing(
-                                              el.id,
-                                              el.name,
-                                              el.dueDate
-                                            )
-                                          }
-                                        >
-                                          Edit
-                                        </button>
-                                      )}
-                                      {canRemove && (
-                                        <button
-                                          className="remove-button"
-                                          onClick={() => removeItem(key, index)}
-                                        >
-                                          Remove
-                                        </button>
-                                      )}
-                                    </>
-                                  )}
-                                </div>
+                                        {isEditing ? (
+                                          <>
+                                            <input
+                                              type="text"
+                                              className="edit-input"
+                                              value={editingItems[el.id].name}
+                                              onChange={(e) =>
+                                                handleNameInputChange(e, el.id)
+                                              }
+                                              onKeyDown={(e) =>
+                                                handleKeyDown(e, el.id)
+                                              }
+                                              onBlur={(e) =>
+                                                handleBlur(e, el.id)
+                                              }
+                                              onClick={() =>
+                                                handleInputFocus(el.id)
+                                              }
+                                            />
+                                            <input
+                                              type="date"
+                                              className="edit-input"
+                                              value={
+                                                editingItems[el.id].dueDate
+                                              }
+                                              onChange={(e) =>
+                                                handleDueDateInputChange(
+                                                  e,
+                                                  el.id
+                                                )
+                                              }
+                                              onKeyDown={(e) =>
+                                                handleKeyDown(e, el.id)
+                                              }
+                                              onBlur={(e) =>
+                                                handleBlur(e, el.id)
+                                              }
+                                              onClick={() =>
+                                                handleInputFocus(el.id)
+                                              }
+                                            />
+                                            <button
+                                              className="edit-confirm"
+                                              onClick={() =>
+                                                confirmEditing(el.id)
+                                              }
+                                            >
+                                              &#10004;
+                                            </button>
+                                            <button
+                                              className="edit-cancel"
+                                              onClick={() =>
+                                                cancelEditing(el.id)
+                                              }
+                                            >
+                                              &#10005;
+                                            </button>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <div>{el.name}</div>
+                                            <div>
+                                              {"Due date --> "}
+                                              {el.dueDate}
+                                            </div>
+                                            {canEdit && (
+                                              <button
+                                                className="edit-button"
+                                                onClick={() =>
+                                                  startEditing(
+                                                    el.id,
+                                                    el.name,
+                                                    el.dueDate
+                                                  )
+                                                }
+                                              >
+                                                Edit
+                                              </button>
+                                            )}
+                                            {canRemove && (
+                                              <button
+                                                className="remove-button"
+                                                onClick={() =>
+                                                  removeItem(key, index)
+                                                }
+                                              >
+                                                Remove
+                                              </button>
+                                            )}
+                                          </>
+                                        )}
+                                      </div>
+                                    );
+                                  }}
+                                </Draggable>
                               );
-                              }}
-                            </Draggable>
-                          );
-                        })}
+                            })}
 
-                        {provided.placeholder}
-                      </div>
-                    );
-                  }}
-                </Droppable>
-              </div>
-            );
-          })}
-        </DragDropContext>
+                            {provided.placeholder}
+                          </div>
+                        );
+                      }}
+                    </Droppable>
+                  </div>
+                );
+              })}
+            </DragDropContext>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   useNavigate,
@@ -127,7 +126,7 @@ const App = () => {
       setUser(JSON.parse(storedUser));
     }
     authListener();
-  }, []);
+  }, [authListener]);
 
   return (
     <div className="App">

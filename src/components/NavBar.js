@@ -2,6 +2,7 @@ import "./NavBar.css";
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import logo from "./logo.png"
 
 const NavBar = ({ welcomeText, handleLogout }) => {
   const currentDate = new Date().toLocaleDateString("en-US", {
@@ -38,7 +39,10 @@ const NavBar = ({ welcomeText, handleLogout }) => {
   return (
     <div className="navbar">
       <div className="navbar-left">{welcomeText}</div>
-      <div className="navbar-middle">Collabify</div>
+      <div className="navbar-middle">
+        <img src={logo} alt="Logo"></img>
+        Collabify
+      </div>
       <div className="navbar-right">
         <div className="navbar-date">{currentDate}</div>
         <div className="navbar-user-icon" onClick={handleUserIconClick}>

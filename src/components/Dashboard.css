@@ -1,9 +1,30 @@
 body {
-  background-color: #3b3d42;
+  background-color:  #333333;
 }
 
 .dashboard {
   height: 100vh;
+}
+
+.dashboard .title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 100%;
+  height: 5.5vh;
+}
+
+.dashboard h1 {
+  font-size: 1.2rem;
+  color: white;
+  padding: 10px 80px 10px 80px;
+  border: 1px solid white;
+  border-top: none;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  background-color: #f9346c;
 }
 
 .dashboard-buttons {
@@ -12,8 +33,7 @@ body {
   grid-gap: 0px;
   justify-content: center;
   align-items: center;
-  height: 93vh;
-  background-color: #3b3d42;
+  height: 85vh;
   padding-left: 9.5%;
 }
 
@@ -32,12 +52,51 @@ body {
   max-width: 75%;
   height: 75%;
   color: #3b3d42;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-button:nth-child(1) {
+  background-image: linear-gradient(135deg, #ff00ff, #0000ff, #00ffff);
+}
+
+.dashboard-button:nth-child(2) {
+  background-image: linear-gradient(135deg, #ff9933, #ff33cc, #33ccff);
+}
+
+.dashboard-button:nth-child(3) {
+  background-image: linear-gradient(135deg, #ff9933, #ff33cc, #33ccff);
+}
+
+.dashboard-button:nth-child(4) {
+  background-image: linear-gradient(135deg, #ff00ff, #0000ff, #00ffff);
+}
+
+.dashboard-button:hover {
+  transform: scale(1.05) translateY(-5px);
+  background-color: #51447e;
+  color: #e6e6e6;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+  transform: scale(1.05) translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-button:hover .dashboard-icon,
+.dashboard-button:hover .dashboard-button-text {
+  color: #ffffff;
+  transform: scale(1.2);
+}
+
+.dashboard-button:hover .dashboard-icon {
+  transform: translateY(-10px) translateZ(10px) scale(1.2);
 }
 
 .dashboard-icon {
-  font-size: 50px;
-  color: #3b3d42;
+  color: transparent;
   margin-bottom: 20px;
+  font-size: 50px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
 }
 
 .dashboard-button-link {
@@ -45,19 +104,7 @@ body {
 }
 
 .dashboard-button-text {
-  font-size: 16px;
-  color: #3b3d42;
+  font-size: 30px;
+  color: #fdfdfd;
   text-align: center;
-}
-
-.dashboard-button:hover {
-  transform: translateY(-15px);
-  background-color: #51447e;
-  color: #e6e6e6;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.dashboard-button:hover .dashboard-icon,
-.dashboard-button:hover .dashboard-button-text {
-  color: #ffffff;
 }
