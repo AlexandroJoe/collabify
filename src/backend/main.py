@@ -2,7 +2,6 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 import crud, models, schemas
 from database import engine, get_db
-from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import bcrypt
 from pydantic import EmailStr
@@ -13,14 +12,14 @@ from jose import JWTError, jwt
 
 models.Base.metadata.create_all(bind = engine)
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 SECRET_KEY = "asecretkeysisasecretkeysothisisasecret"
 ALGORITHM = "HS256"
 
 collabify = FastAPI()
 
 origins = {
-    "http://localhost:8000"
+    "*"
 }
 
 collabify.add_middleware(
@@ -61,12 +60,13 @@ async def signup(
     db_user = crud.get_user_by_email(session, email = payload.email)
     if db_user:
         raise HTTPException(status_code = 400, detail = "Email already registered")
-    bytePwd = payload.password.encode('utf-8')
-    mySalt = bcrypt.gensalt()
-    hashed_pass = bcrypt.hashpw(bytePwd, mySalt)
+    # bytePwd = payload.password.encode('utf-8')
+    # mySalt = bcrypt.gensalt()
+    # hashed_pass = bcrypt.hashpw(bytePwd, mySalt)
+    hashed_pass = crud.pwd_context.hash(payload.password)
     return crud.create_user(session, email = payload.email, password = hashed_pass)
 
-@collabify.post("/get-user/", response_model = schemas.Token)
+@collabify.post("/token", response_model = schemas.Token)
 async def login(
     payload: OAuth2PasswordRequestForm = Depends(),
     session: Session = Depends(get_db),
@@ -99,4 +99,4 @@ def delete_user(
 async def protected_route(
     token_data: schemas.TokenData = Depends(get_current_user)
 ):
-    return {"message": "Access granted"}
+    return {"Message": "Access granted"}

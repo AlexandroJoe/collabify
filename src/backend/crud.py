@@ -9,12 +9,18 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException
+from passlib.context import CryptContext
 
 SECRET_KEY = "asecretkeysisasecretkeysothisisasecret"
 ALGORITHM = "HS256"
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 def get_user_by_id(db: Session, user_id: int):
     return db.query(models.Users).filter(models.Users.id == user_id).first()
+
+def get_user_by_email(db: Session, email: EmailStr):
+    return db.query(models.Users).filter(models.Users.email == email).first()
 
 def get_user_by_email(db: Session, email: str):
     return db.query(models.Users).filter(models.Users.email == email).first()
@@ -49,13 +55,13 @@ def get_users(db: Session, email):
     return None
 
 def verify_password(password, hashed_password):
-    return bcrypt.checkpw(password, hashed_password)
+    return pwd_context.verify(password, hashed_password)
 
 def auth_user(db: Session, email, password):
-    user = get_users(db, email)
+    user = get_user_by_email(db, email)
     if not user:
         return False
-    check_pass = verify_password(password.encode('utf-8'), user.password.encode('utf-8'))
+    check_pass = verify_password(password, user.password)
     if not check_pass:
         return False
     return user
