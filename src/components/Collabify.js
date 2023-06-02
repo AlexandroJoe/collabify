@@ -57,35 +57,50 @@ const Collabify = () => {
 
   const handleSignUp = async (email, password) => {
     cleanErrors();
-    try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      ).catch((error) => {
-        switch (error.code) {
-          case "auth/invalid-email":
-            setEmailError("The email address is invalid.");
-            break;
-          case "auth/email-already-in-use":
-            setEmailError(
-              "The email address is already in use. Login to your account"
-            );
-            break;
-          case "auth/weak-password":
-            setPasswordError("Password should be at least 6 characters");
-            break;
-        }
+    // try {
+    //   const res = await createUserWithEmailAndPassword(
+    //     auth,
+    //     email,
+    //     password
+    //   ).catch((error) => {
+    //     switch (error.code) {
+    //       case "auth/invalid-email":
+    //         setEmailError("The email address is invalid.");
+    //         break;
+    //       case "auth/email-already-in-use":
+    //         setEmailError(
+    //           "The email address is already in use. Login to your account"
+    //         );
+    //         break;
+    //       case "auth/weak-password":
+    //         setPasswordError("Password should be at least 6 characters");
+    //         break;
+    //     }
+    //   });
+    //   const user = res.user;
+    //   await addDoc(collection(fs, "users"), {
+    //     uid: user.uid,
+    //     email,
+    //     password,
+    //     team: null,
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    try{
+      const response = await axios.post('http://localhost:8000/signup', {email, password}, {
+        headers: {'content-type': 'application/json'}
       });
-      const user = res.user;
-      await addDoc(collection(fs, "users"), {
-        uid: user.uid,
-        email,
-        password,
-        team: null,
-      });
+      const token = response.data.access_token;
+      localStorage.setItem('token', token); 
     } catch (error) {
-      console.log(error);
+      if (error.response){
+        console.log('Error response: ', error.response.data);
+      } else if (error.request){
+        console.log('No response received: ', error.request);
+      } else {
+        console.log('Error: ', error.message);
+      }
     }
   };
 
