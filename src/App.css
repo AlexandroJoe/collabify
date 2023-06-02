@@ -48,7 +48,15 @@
 }
 
 .appName {
+  display: inline-flex;
   margin-left: 10px;
+}
+
+.appName img {
+  width: 40px;
+  height: 40px;
+  margin-top: 15px;
+  margin-right: 10px;
 }
 
 .login .loginContainer .title {

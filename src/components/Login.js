@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logo from "./logo.png";
 
 const Login = (props) => {
   const {
@@ -18,6 +19,7 @@ const Login = (props) => {
   const [passwordErrorSU, setPasswordErrorSU] = useState("");
   const [confirmError, setConfirmError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*\d)(?=.*[A-Z]).{8,}$/;
@@ -38,6 +40,7 @@ const Login = (props) => {
     } else {
       setEmailErrorSU("");
     }
+    setShowError(false); // Reset showError state
   };
 
   const handlePasswordChange = (e) => {
@@ -50,6 +53,7 @@ const Login = (props) => {
     } else {
       setPasswordErrorSU("");
     }
+    setShowError(false); // Reset showError state
   };
 
   const handleConfirmPasswordChange = (e) => {
@@ -60,6 +64,7 @@ const Login = (props) => {
     } else {
       setConfirmError("");
     }
+    setShowError(false); // Reset showError state
   };
 
   const handleSignToggle = () => {
@@ -69,7 +74,13 @@ const Login = (props) => {
     setEmailErrorSU("");
     setPasswordErrorSU("");
     setConfirmError("");
+    setShowError(false); // Reset showError state
     setHasAccount(!hasAccount);
+  };
+
+  const handleLoginClick = () => {
+    setShowError(true);
+    handleLogin();
   };
 
   const isSignUpDisabled =
@@ -78,6 +89,7 @@ const Login = (props) => {
   return (
     <section className="login">
       <div className="appName">
+        <img src={logo} alt="Logo" />
         <h1>Collabify</h1>
       </div>
       <div className="loginContainer">
@@ -92,7 +104,7 @@ const Login = (props) => {
               value={email}
               onChange={handleEmailChange}
             />
-            {email && <p className="errorMsg">{emailError}</p>}
+            {showError && email && <p className="errorMsg">{emailError}</p>}
             <label>Password</label>
             <input
               type="password"
@@ -100,7 +112,7 @@ const Login = (props) => {
               value={password}
               onChange={handlePasswordChange}
             />
-            {password && <p className="errorMsg">{passwordError}</p>}
+            {showError && password && <p className="errorMsg">{passwordError}</p>}
           </>
         ) : (
           <>
@@ -113,15 +125,19 @@ const Login = (props) => {
               value={email}
               onChange={handleEmailChange}
             />
-            {!hasAccount && email && <p className="errorMsgSU">{emailErrorSU}</p>}
+            {!hasAccount && showError && email && (
+              <p className="errorMsgSU">{emailErrorSU}</p>
+            )}
             <label>Password</label>
             <input
               type="password"
               required
               value={password}
               onChange={handlePasswordChange}
-            />{" "}
-            {!hasAccount && password && <p className="errorMsgSU">{passwordErrorSU}</p>}
+            />
+            {!hasAccount && showError && password && (
+              <p className="errorMsgSU">{passwordErrorSU}</p>
+            )}
             <label>Confirm Password</label>
             <input
               type="password"
@@ -129,13 +145,15 @@ const Login = (props) => {
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
             />
-            {confirmPassword && <p className="errorMsg">{confirmError}</p>}
+            {showError && confirmPassword && (
+              <p className="errorMsg">{confirmError}</p>
+            )}
           </>
         )}
         <div className="btnContainer">
           {hasAccount ? (
             <>
-              <button onClick={handleLogin}>Login</button>
+              <button onClick={handleLoginClick}>Login</button>
               <p>
                 Don't have an account?{" "}
                 <span onClick={handleSignToggle}>Sign up</span>

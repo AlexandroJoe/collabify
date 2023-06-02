@@ -178,11 +178,11 @@ function TodoList({ handleLogout }) {
     }
   };
 
-  const handleClickOutside = (e, itemId) => {
-    if (!e.target.closest(`#item-${itemId}`)) {
-      cancelEditing(itemId);
-    }
-  };
+  // const handleClickOutside = (e, itemId) => {
+  //   if (!e.target.closest(`#item-${itemId}`)) {
+  //     cancelEditing(itemId);
+  //   }
+  // };
 
   const handleInputFocus = (itemId) => {
     setLastFocusedInput(itemId);
@@ -191,7 +191,9 @@ function TodoList({ handleLogout }) {
   useEffect(() => {
     const handleClick = (e) => {
       Object.keys(editingItems).forEach((itemId) => {
-        handleClickOutside(e, itemId);
+        if (!e.target.closest(`#item-${itemId}`)) {
+          cancelEditing(itemId);
+        }
       });
     };
 
@@ -200,7 +202,7 @@ function TodoList({ handleLogout }) {
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, [editingItems, handleClickOutside]);
+  }, [editingItems]);
 
   return (
     <div className="TodoList">
