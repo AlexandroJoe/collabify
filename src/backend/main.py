@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 import crud, models, schemas
 from database import engine, get_db
@@ -6,29 +6,97 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import bcrypt
 from pydantic import EmailStr
-from fastapi import Body, Depends
+from fastapi import Depends
+from datetime import timedelta
+from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError, jwt
 
-models.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind = engine)
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+SECRET_KEY = "asecretkeysisasecretkeysothisisasecret"
+ALGORITHM = "HS256"
 
 collabify = FastAPI()
+
+origins = {
+    "http://localhost:8000"
+}
+
+collabify.add_middleware(
+   CORSMiddleware,
+    allow_origins = origins,
+    allow_credentials =True,
+    allow_methods = ["*"],
+    allow_headers= ["*"],
+)
+
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=401,
+        detail="Invalid authentication credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms = ALGORITHM)
+        email: EmailStr = payload.get("sub")
+        if email is None:
+            raise credentials_exception
+        token_data = schemas.TokenData(email = email)
+    except JWTError:
+        raise credentials_exception
+
+    return token_data
         
 @collabify.get("/")
 def index():
     return {"Collabify" : "Productive App to Help Your Study"}
 
-@collabify.post("/signup/", response_model=schemas.Users)
+@collabify.post("/signup/", response_model = schemas.Users)
 async def signup(
-    email: EmailStr,
-    password: str,
+    payload: schemas.CreateUserSchema,
     session: Session = Depends(get_db),
 ):
-    bytePwd = password.encode('utf-8')
+    db_user = crud.get_user_by_email(session, email = payload.email)
+    if db_user:
+        raise HTTPException(status_code = 400, detail = "Email already registered")
+    bytePwd = payload.password.encode('utf-8')
     mySalt = bcrypt.gensalt()
     hashed_pass = bcrypt.hashpw(bytePwd, mySalt)
-    db_user = crud.get_user_by_email(session, email = email)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    return crud.create_user(session, email = email, password = hashed_pass)
+    return crud.create_user(session, email = payload.email, password = hashed_pass)
 
+@collabify.post("/get-user/", response_model = schemas.Token)
+async def login(
+    payload: OAuth2PasswordRequestForm = Depends(),
+    session: Session = Depends(get_db),
+):
+    db_user = crud.get_user_by_email(session, email = payload.username)
+    if not db_user:
+        raise HTTPException(status_code = 400, detail = "Email does not exists")
+    check_user = crud.auth_user(session, payload.username, payload.password)
+    if not check_user:
+        raise HTTPException(
+            status_code = status.HTTP_401_UNAUTHORIZED,
+            detail = "Incorrect username or password",
+            headers = {"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes = 30)
+    access_token = crud.create_token(
+        data={"sub": check_user.email}, expires_delta = access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
+@collabify.delete("/delete-user/{user_id}", response_model = schemas.UserSchema)
+def delete_user(
+    id: int,
+    token: str = Depends(oauth2_scheme),
+    session: Session = Depends(get_db)
+):
+    return crud.delete_user(session, id)
+
+@collabify.get("/protected_route")
+async def protected_route(
+    token_data: schemas.TokenData = Depends(get_current_user)
+):
+    return {"message": "Access granted"}

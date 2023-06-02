@@ -1,10 +1,18 @@
 from pydantic import BaseModel, EmailStr, Field
 
 class Users(BaseModel):
-    email: EmailStr
+    email: EmailStr | None = None
+    
+    class Config:
+        orm_mode = True
     
 class CreateUserSchema(Users):
-    hashed_password: str = Field(alias="password")
+    password: str
+        
+class UserLoginSchema(BaseModel):
+    id: int 
+    email: EmailStr| None = None
+    is_active: bool | None = None
     
 class UserSchema(Users):
     id: int
@@ -12,7 +20,13 @@ class UserSchema(Users):
 
     class Config:
         orm_mode = True
-        
-class UserLoginSchema(BaseModel):
-    email: EmailStr = Field(alias="username")
-    password: str 
+    
+class UserLogin(UserLoginSchema):
+    password: str
+    
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    
+class TokenData(BaseModel):
+    email: EmailStr | None = None
