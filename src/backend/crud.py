@@ -77,7 +77,7 @@ def create_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 def delete_user(db: Session, id: int):
-    db_user = db.get(models.Users, id)
+    db_user = db.query(models.Users).filter(models.Users.id == id).first()
     db.delete(db_user)
     db.commit()
     return db_user
