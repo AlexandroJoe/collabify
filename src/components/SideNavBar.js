@@ -20,25 +20,25 @@ const SideNavBar = () => {
             <span className="nav-text">Dashboard</span>
           </Link>
         </li>
-        <li className={`nav-item ${isActivePage("/todo") ? "active" : ""}`}>
+        <li className={`nav-item ${isActivePage("/collabify/todo") ? "active" : ""}`}>
           <Link to={"/collabify/todo"} className="nav-link">
             <FaEdit className="icon" />
             <span className="nav-text">TodoList</span>
           </Link>
         </li>
-        <li className={`nav-item ${isActivePage("/notes") ? "active" : ""}`}>
+        <li className={`nav-item ${isActivePage("/collabify/notes") ? "active" : ""}`}>
           <Link to={"/collabify/notes"} className="nav-link">
             <FaStickyNote className="icon" />
             <span className="nav-text">Notepad</span>
           </Link>
         </li>
-        <li className={`nav-item ${isActivePage("/") ? "active" : ""}`}>
+        <li className={`nav-item ${isActivePage("/collabify/chatwithai") ? "active" : ""}`}>
           <Link to={"/"} className="nav-link">
             <AiFillRobot className="icon" />
             <span className="nav-text">Chat With Ai</span>
           </Link>
         </li>
-        <li className={`nav-item ${isActivePage("/") ? "active" : ""}`}>
+        <li className={`nav-item ${isActivePage("/collabify/mindmap") ? "active" : ""}`}>
           <Link to={"/"} className="nav-link">
             <FaProjectDiagram className="icon" />
             <span className="nav-text">Mind mapping</span>

@@ -23,7 +23,7 @@ body {
   background-color: #333333;
 }
 
-nav {
+.home-container nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,13 +39,15 @@ nav {
 .navbar-menu-container {
   display: none;
 }
-.navbar-links-container a {
+
+.navbar-links-container p {
+  display: inline;
   margin-right: 3rem;
-  text-decoration: none;
   color: rgb(255, 255, 255);
   font-size: 1.1rem;
   font-weight: 600;
 }
+
 .primary-button {
   padding: 0.9rem 1.75rem;
   background-color: white;
@@ -95,18 +97,25 @@ nav {
   justify-content: center;
   align-items: flex-start;
 }
+
 .primary-heading {
   font-size: clamp(2rem, 5vw, 4rem);
   color: #fffcfc;
   /* line-height: 5rem; */
   max-width: 37.5rem;
 }
+
 .primary-text {
   font-size: clamp(1rem, 3vw, 1.5rem);
   max-width: 500px;
   color: #cfcdcd;
   margin: 1.5rem 0rem;
 }
+
+.home-text-section a {
+  text-decoration: none;
+}
+
 .secondary-button {
   padding: 1rem 2.5rem;
   background-color: #fe9e0d;
@@ -122,6 +131,7 @@ nav {
   align-items: center;
   justify-content: center;
 }
+
 .secondary-button svg {
   margin-left: 0.75rem;
   font-size: 1.5rem;
@@ -129,7 +139,6 @@ nav {
 .secondary-button:hover {
   background-color: #e48f0f;
 }
-
 
 
 .about-section-container {
