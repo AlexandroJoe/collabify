@@ -31,29 +31,29 @@ const Collabify = () => {
     setPasswordError("");
   };
 
-  const handleLogin = () => {
+  const handleLogin = async (email, password) => {
     cleanErrors();
-    fire
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch((err) => {
-        switch (err.code) {
-          case "auth/invalid-email":
-            setEmailError("The email address is invalid");
-            break;
-          case "auth/user-disabled":
-            setEmailError("The email address has been disabled");
-            break;
-          case "auth/user-not-found":
-            setEmailError("Couldn't find your Collabify account");
-            break;
-          case "auth/wrong-password":
-            setPasswordError("Wrong password. Try again");
-            break;
-          default:
-            setEmailError("An error occurred. Please try again.");
-        }
+    try {
+      const response = await fetch("http://localhost:8000/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          username: email,
+          password: password,
+          grant_type: "password",
+          scope: "",
+        }),
       });
+      const token = response.data.access_token;
+      localStorage.setItem('token', token);
+      navigate('/collabify');
+      setUser(true);
+    } catch (error) {
+      console.error(error.response.data);
+    }
+
   };
 
   const handleSignUp = async (email, password) => {
