@@ -31,6 +31,10 @@ const Collabify = () => {
     setPasswordError("");
   };
 
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   const handleLogin = async (email, password) => {
     cleanErrors();
     try {
@@ -45,7 +49,14 @@ const Collabify = () => {
       });
       // const token = response.data.access_token;
       // localStorage.setItem('token', token);
-      navigate('/collabify/todo');
+
+      const newUser = {
+        email,
+        password,
+      };
+
+      setUser(newUser);
+      navigate('/collabify');
     } catch (error) {
       console.error(error.response.data);
     }
@@ -91,7 +102,7 @@ const Collabify = () => {
   };
 
   const handleLogout = () => {
-    fire.auth().signOut();
+    setUser(null);
     navigate("/collabify", { replace: true });
     console.log("clicked");
   };
@@ -115,7 +126,7 @@ const Collabify = () => {
       setUser(JSON.parse(storedUser));
     }
     authListener();
-  }, [authListener]);
+  }, []);
 
   return (
     <div className="Collabify">
@@ -130,7 +141,7 @@ const Collabify = () => {
           </>
         ) : (
           <Route
-            path="/"
+            path="/"   
             element={
               <Login
                 email={email}
