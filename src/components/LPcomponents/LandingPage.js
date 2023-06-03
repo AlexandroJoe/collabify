@@ -21,6 +21,10 @@ import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { FiArrowRight } from "react-icons/fi";
 import HomeBG from "./Productivity.jpg";
+import { BsTwitter } from "react-icons/bs";
+import { SiLinkedin } from "react-icons/si";
+import { BsYoutube } from "react-icons/bs";
+import { FaFacebookF } from "react-icons/fa";
 
 const LandingPage = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -34,15 +38,15 @@ const LandingPage = () => {
       icon: <InfoIcon />,
     },
     {
-      text: "Testimonials",
+      text: "Creators",
       icon: <CommentRoundedIcon />,
     },
     {
-      text: "Contact",
+      text: "Features",
       icon: <PhoneRoundedIcon />,
     },
     {
-      text: "Cart",
+      text: "More",
       icon: <ShoppingCartRoundedIcon />,
     },
   ];
@@ -59,13 +63,13 @@ const LandingPage = () => {
 
   return (
     <>
-      <div className="home-container">
+      <div className="home-container" id="Home">
         <nav>
           <div className="nav-logo-container">
             <h1>Collabify</h1>
           </div>
           <div className="navbar-links-container">
-            <p>Home</p>
+            <p onClick={() => scrollToSection("Home")}>Home</p>
             <p onClick={() => scrollToSection("About")}>About</p>
             <p onClick={() => scrollToSection("Creators")}>Creators</p>
             <p onClick={() => scrollToSection("Features")}>Features</p>
@@ -91,9 +95,9 @@ const LandingPage = () => {
               <List>
                 {menuOptions.map((item) => (
                   <ListItem key={item.text} disablePadding>
-                    <ListItemButton>
+                    <ListItemButton onClick={() => scrollToSection(item.text)}>
                       <ListItemIcon>{item.icon}</ListItemIcon>
-                      <ListItemText primary={item.icon} />
+                      <ListItemText primary={item.text} />
                     </ListItemButton>
                   </ListItem>
                 ))}
@@ -134,6 +138,39 @@ const LandingPage = () => {
         <section id="More">
           <Productivity />
         </section>
+        <div className="footer-wrapper">
+          <div className="footer-section-one">
+            <div className="footer-logo-container">
+              <h1>Collabify</h1>
+            </div>
+            <div className="footer-icons">
+              <BsTwitter />
+              <SiLinkedin />
+              <BsYoutube />
+              <FaFacebookF />
+            </div>
+          </div>
+          <div className="footer-section-two">
+            <div className="footer-section-columns">
+              <span onClick={() => scrollToSection("Home")}>Home</span>
+              <span>Help</span>
+              <span onClick={() => scrollToSection("About")}>About</span>
+              <span onClick={() => scrollToSection("Creators")}>Creators</span>
+              <span onClick={() => scrollToSection("Features")}>Features</span>
+              <span onClick={() => scrollToSection("More")}>Productivity</span>
+            </div>
+            <div className="footer-section-columns">
+              <span>+261 34 02 839 04</span>
+              <span>collabify@gmail.com</span>
+              <span>collabifyHelp@gamil.com</span>
+              <span>collabifyIssue@collabify.com</span>
+            </div>
+            <div className="footer-section-columns">
+              <span>Terms & Conditions</span>
+              <span>Privacy Policy</span>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
