@@ -36,20 +36,16 @@ const Collabify = () => {
     try {
       const response = await fetch("http://localhost:8000/token", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          username: email,
-          password: password,
-          grant_type: "password",
-          scope: "",
-        }),
+        body: new URLSearchParams({ 
+        username: email, 
+        password: password,
+        grant_type: "password",
+        scope: "" 
+        }), headers: { 'content-type': 'application/x-www-form-urlencoded;charset=UTF-8' } 
       });
-      const token = response.data.access_token;
-      localStorage.setItem('token', token);
-      navigate('/collabify');
-      setUser(true);
+      // const token = response.data.access_token;
+      // localStorage.setItem('token', token);
+      navigate('/collabify/todo');
     } catch (error) {
       console.error(error.response.data);
     }
@@ -66,23 +62,23 @@ const Collabify = () => {
         { headers: { 'content-type': 'application/json' } }
       );
   
-      const token = response.data.access_token;
-      localStorage.setItem('token', token);
+      // const token = response.data.access_token;
+      // localStorage.setItem('token', token);
   
       // Create a user object with the necessary properties
-      const newUser = {
-        email,
-        password,
-        team: null,
-      };
+      // const newUser = {
+      //   email,
+      //   password,
+      //   team: null,
+      // };
   
       // Update the user state with the new user object
-      setUser(newUser);
+      // setUser(newUser);
   
       // Store the user in localStorage
-      localStorage.setItem("user", JSON.stringify(newUser));
+      // localStorage.setItem("user", JSON.stringify(newUser));
   
-      navigate("/"); // Navigate to the dashboard route after successful signup
+      navigate("/collabify/todo"); // Navigate to the dashboard route after successful signup
     } catch (error) {
       if (error.response) {
         console.error('Error response:', error.response.data);
