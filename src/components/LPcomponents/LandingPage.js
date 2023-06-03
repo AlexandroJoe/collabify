@@ -72,7 +72,7 @@ const LandingPage = () => {
             <p onClick={() => scrollToSection("Creators")}>Creators</p>
             <p onClick={() => scrollToSection("Features")}>Features</p>
             <p onClick={() => scrollToSection("More")}>More...</p>
-            <Link to="/collabify">
+            <Link to="/collabify/login">
               <button className="primary-button">Get Started</button>
             </Link>
           </div>
@@ -112,7 +112,7 @@ const LandingPage = () => {
               Tired of having to open different apps everytime you have to work?
               Well Collabify is here for you.
             </p>
-            <Link to="/collabify">
+            <Link to="/collabify/login">
               <button className="secondary-button">
                 Get Started Now <FiArrowRight />
               </button>

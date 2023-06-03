@@ -15,7 +15,7 @@ const SideNavBar = () => {
     <nav className="sideNavBar">
       <ul className="nav-menu-items">
         <li className={`nav-item ${isActivePage("/collabify") ? "active" : ""}`}>
-          <Link to={"/collabify"} className="nav-link">
+          <Link to={"/collabify/dashboard"} className="nav-link">
             <FaHome className="icon" />
             <span className="nav-text">Dashboard</span>
           </Link>

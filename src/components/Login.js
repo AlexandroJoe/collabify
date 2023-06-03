@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import logo from "./logo.png";
 import { useNavigate } from "react-router-dom";
+import "./Login.css"
 
 
 const Login = (props) => {
