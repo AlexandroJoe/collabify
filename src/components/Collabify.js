@@ -58,46 +58,31 @@ const Collabify = () => {
 
   const handleSignUp = async (email, password) => {
     cleanErrors();
-    // try {
-    //   const res = await createUserWithEmailAndPassword(
-    //     auth,
-    //     email,
-    //     password
-    //   ).catch((error) => {
-    //     switch (error.code) {
-    //       case "auth/invalid-email":
-    //         setEmailError("The email address is invalid.");
-    //         break;
-    //       case "auth/email-already-in-use":
-    //         setEmailError(
-    //           "The email address is already in use. Login to your account"
-    //         );
-    //         break;
-    //       case "auth/weak-password":
-    //         setPasswordError("Password should be at least 6 characters");
-    //         break;
-    //     }
-    //   });
-    //   const user = res.user;
-    //   await addDoc(collection(fs, "users"), {
-    //     uid: user.uid,
-    //     email,
-    //     password,
-    //     team: null,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  
     try {
       const response = await axios.post(
         'http://localhost:8000/signup/',
-        { email, password }, // Include the "password" field in the request payload
+        { email, password },
         { headers: { 'content-type': 'application/json' } }
       );
-      const token = response.data.access_token; // Assuming the token field is "access_token"
+  
+      const token = response.data.access_token;
       localStorage.setItem('token', token);
-      // navigate('/landing'); // Redirect to the profile page after successful
-
+  
+      // Create a user object with the necessary properties
+      const newUser = {
+        email,
+        password,
+        team: null,
+      };
+  
+      // Update the user state with the new user object
+      setUser(newUser);
+  
+      // Store the user in localStorage
+      localStorage.setItem("user", JSON.stringify(newUser));
+  
+      navigate("/"); // Navigate to the dashboard route after successful signup
     } catch (error) {
       if (error.response) {
         console.error('Error response:', error.response.data);
