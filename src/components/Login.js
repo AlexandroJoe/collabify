@@ -84,7 +84,7 @@ const Login = (props) => {
 
   const handleLoginClick = () => {
     setShowError(true);
-    handleLogin();
+    handleLogin(email, password);
   };
 
   const goBack = () => {
