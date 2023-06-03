@@ -16,9 +16,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
-import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import GroupIcon from '@mui/icons-material/Group';
+import AppsIcon from '@mui/icons-material/Apps';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { FiArrowRight } from "react-icons/fi";
 import HomeBG from "./Productivity.jpg";
 import { BsTwitter } from "react-icons/bs";
@@ -39,15 +39,15 @@ const LandingPage = () => {
     },
     {
       text: "Creators",
-      icon: <CommentRoundedIcon />,
+      icon: <GroupIcon />,
     },
     {
       text: "Features",
-      icon: <PhoneRoundedIcon />,
+      icon: <AppsIcon />,
     },
     {
       text: "More",
-      icon: <ShoppingCartRoundedIcon />,
+      icon: <ReadMoreIcon />,
     },
   ];
 
