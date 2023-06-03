@@ -144,10 +144,10 @@ body {
 
 .about-section-container {
   margin-left: 3rem;
-}
+  }
 
 .about-section-container, .productivity-section-container {
-  margin-top: 10rem;
+  margin-top: 8rem;
   position: relative;
   display: flex;
   align-items: center;
@@ -172,6 +172,11 @@ body {
   margin-left: 8rem;
 }
 
+.about-section-text-container .primary-text {
+  max-width: 90%;
+  margin-bottom: 0.5rem;
+}
+
 .productivity-section-text-container {
   flex: 1;
   justify-content: center;
@@ -183,10 +188,8 @@ body {
 .productivity-section-container .primary-heading {
   font-size: clamp(2rem, 5vw, 4rem);
   color: #fffcfc;
-  /* line-height: 5rem; */
   max-width: 50rem;
 }
-
 
 .primary-subheading {
   font-weight: 700;
@@ -229,7 +232,7 @@ body {
 }
 
 .creators-section-wrapper, .features-section-wrapper {
-  margin-top: 10rem;
+  margin-top: 8rem;
 }
 .creators-section-top p, .features-section-top p{
   max-width: 600px !important;
@@ -349,16 +352,18 @@ body {
   justify-content: center;
 }
 
-.features-section-info .info-boxes-img-container {
-  /* Add your image container styles here */
-  margin-bottom: 20px;
-}
-
-.features-section-info .info-boxes-img-container img {
+.features-section-info .card-font .info-boxes-img-container img {
   /* Add your image styles here */
   width: 10rem;
   height: 10rem;
 }
+
+.features-section-info .card-back .info-boxes-img-container img {
+  /* Add your image styles here */
+  width: 95%;
+  height: 95%;
+}
+
 
 .footer-wrapper {
   display: flex;

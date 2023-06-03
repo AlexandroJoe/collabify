@@ -3,32 +3,34 @@ import todo from "./todo.png";
 import notepad from "./notepad.png";
 import robot from "./Robot.png";
 import mindmap from "./mind-map.png";
+import todo2 from "./todo2.png";
+import notepad2 from "./notepad2.png";
 
 const Features = () => {
   const featuresInfoData = [
     {
       image: todo,
       title: "To-do List",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et sagittis duis elementum interdum facilisi bibendum.",
-      image2: ""
+      text: "A draggable to-do list with different columns for your new, in-progress and completed tasks. Editable and removable at anywtime.",
+      image2: todo2,
     },
     {
       image: notepad,
       title: "Notepad",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et ",
-      image2: ""
+      text: "You very own notepad to keep all your thoughts availablon the same screen. Additionally the last modified date and multiple styling types are available.",
+      image2: notepad2,
     },
     {
       image: robot,
       title: "Chat with AI",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et lorem ipsum",
-      image2: ""
+      text: "Having any questions that you don't remember the answer to? Maybe our chatBot can help you.",
+      image2: "",
     },
     {
       image: mindmap,
       title: "Mind Map",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et lorem ipsum",
-      image2: ""
+      text: "One of the most important aspects of the idealization process is the visuation of how each idea lead to another, our mind mapping tool is here to help you with it.",
+      image2: "",
     },
   ];
 
@@ -38,7 +40,10 @@ const Features = () => {
         <p className="primary-subheading">Features</p>
         <h1 className="primary-heading">What We Have to Offer</h1>
         <p className="primary-text">
-          Lorem ipsum dolor sit amet consectetur. Non tincidunt magna non et elit. Dolor turpis molestie dui magnis facilisis at fringilla quam.
+          Step into the world of Collabify, where innovation meets efficiency
+          and productivity knows no bounds. In this section, we invite you to
+          discover the remarkable features that make Collabify a game-changer in
+          the realm of productivity tools.
         </p>
       </div>
       <div className="features-section-bottom">

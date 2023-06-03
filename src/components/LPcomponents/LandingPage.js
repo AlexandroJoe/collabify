@@ -4,12 +4,10 @@ import Creators from "./Creators";
 import Features from "./Features";
 import Productivity from "./Productivity";
 import { Link } from "react-router-dom";
-import { BsCart2 } from "react-icons/bs";
 import { HiOutlineBars3 } from "react-icons/hi2";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -56,7 +54,7 @@ const LandingPage = () => {
     if (element) {
       window.scrollTo({
         behavior: "smooth",
-        top: element.offsetTop - 50, // Adjust the offset as needed
+        top: element.offsetTop - 50, 
       });
     }
   };
