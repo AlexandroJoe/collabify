@@ -97,7 +97,23 @@ const Collabify = () => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+
+    axios.get('http://localhost:8000/logout', config)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    localStorage.removeItem("token");
     setUser(null);
     navigate("/collabify", { replace: true });
     console.log("clicked");
