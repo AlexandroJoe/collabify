@@ -21,9 +21,6 @@ class UserSchema(Users):
     class Config:
         orm_mode = True
     
-class UserLogin(UserLoginSchema):
-    password: str
-    
 class Token(BaseModel):
     access_token: str
     token_type: str

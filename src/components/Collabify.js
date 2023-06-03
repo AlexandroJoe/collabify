@@ -8,6 +8,7 @@ import Notes from "./Notes";
 import "./Collabify.css";
 import { query, getDocs, collection, where, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import axios from 'axios';
 
 const Collabify = () => {
   const [user, setUser] = useState(null);
@@ -57,35 +58,54 @@ const Collabify = () => {
 
   const handleSignUp = async (email, password) => {
     cleanErrors();
+    // try {
+    //   const res = await createUserWithEmailAndPassword(
+    //     auth,
+    //     email,
+    //     password
+    //   ).catch((error) => {
+    //     switch (error.code) {
+    //       case "auth/invalid-email":
+    //         setEmailError("The email address is invalid.");
+    //         break;
+    //       case "auth/email-already-in-use":
+    //         setEmailError(
+    //           "The email address is already in use. Login to your account"
+    //         );
+    //         break;
+    //       case "auth/weak-password":
+    //         setPasswordError("Password should be at least 6 characters");
+    //         break;
+    //     }
+    //   });
+    //   const user = res.user;
+    //   await addDoc(collection(fs, "users"), {
+    //     uid: user.uid,
+    //     email,
+    //     password,
+    //     team: null,
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
     try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      ).catch((error) => {
-        switch (error.code) {
-          case "auth/invalid-email":
-            setEmailError("The email address is invalid.");
-            break;
-          case "auth/email-already-in-use":
-            setEmailError(
-              "The email address is already in use. Login to your account"
-            );
-            break;
-          case "auth/weak-password":
-            setPasswordError("Password should be at least 6 characters");
-            break;
-        }
-      });
-      const user = res.user;
-      await addDoc(collection(fs, "users"), {
-        uid: user.uid,
-        email,
-        password,
-        team: null,
-      });
+      const response = await axios.post(
+        'http://localhost:8000/signup/',
+        { email, password }, // Include the "password" field in the request payload
+        { headers: { 'content-type': 'application/json' } }
+      );
+      const token = response.data.access_token; // Assuming the token field is "access_token"
+      localStorage.setItem('token', token);
+      // navigate('/landing'); // Redirect to the profile page after successful
+
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error:', error.message);
+      }
     }
   };
 

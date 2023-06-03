@@ -93,7 +93,7 @@ const Login = (props) => {
   }
 
   const isSignUpDisabled =
-    !hasAccount || emailErrorSU || passwordErrorSU || confirmError;
+    hasAccount || emailErrorSU || passwordErrorSU || confirmError;
 
   return (
     <section className="login">

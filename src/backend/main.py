@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 import crud, models, schemas
 from database import engine, get_db
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-import bcrypt
 from pydantic import EmailStr
 from fastapi import Depends
 from datetime import timedelta
@@ -45,7 +44,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = schemas.TokenData(email = email)
     except JWTError:
         raise credentials_exception
-
+    
     return token_data
         
 @collabify.get("/")
@@ -85,7 +84,16 @@ async def login(
     access_token = crud.create_token(
         data={"sub": check_user.email}, expires_delta = access_token_expires
     )
+    crud.user_active(session, email = payload.username)
     return {"access_token": access_token, "token_type": "bearer"}
+
+@collabify.get("/logout")
+def user_logout(
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    crud.user_inactive(session, token_data.email)
+    return {"Message": "Successfully Logout"}
 
 @collabify.delete("/delete-user/{user_id}", response_model = schemas.UserSchema)
 def delete_user(

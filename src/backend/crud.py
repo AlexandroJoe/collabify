@@ -1,14 +1,9 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import update
 import models, schemas
 from pydantic import EmailStr
-import bcrypt
-import sqlite3
-from sqlite3 import Error
 from datetime import datetime, timedelta
-from jose import JWTError, jwt
-from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends, HTTPException
+from jose import jwt
 from passlib.context import CryptContext
 
 SECRET_KEY = "asecretkeysisasecretkeysothisisasecret"
@@ -22,9 +17,6 @@ def get_user_by_id(db: Session, user_id: int):
 def get_user_by_email(db: Session, email: EmailStr):
     return db.query(models.Users).filter(models.Users.email == email).first()
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.Users).filter(models.Users.email == email).first()
-
 def get_all_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Users).offset(skip).limit(limit).all()
 
@@ -34,25 +26,6 @@ def create_user(db: Session, email: EmailStr, password: str):
     db.commit()
     db.refresh(db_user)
     return db_user
-
-def get_users(db: Session, email):
-    user = select([
-        models.Users.id,
-        models.Users.email,
-        models.Users.password,
-        models.Users.is_active
-    ]).where(models.Users.email == email)
-    user_data = db.execute(user).fetchone()
-    if user_data is not None:
-        id, email, password, is_active = user_data
-        user_dict = {
-            "id": id,
-            "email": email,
-            "password": password,
-            "is_active": is_active
-        }
-        return schemas.UserLogin(**user_dict)
-    return None
 
 def verify_password(password, hashed_password):
     return pwd_context.verify(password, hashed_password)
@@ -81,3 +54,21 @@ def delete_user(db: Session, id: int):
     db.delete(db_user)
     db.commit()
     return db_user
+
+def user_active(db: Session, email: EmailStr):
+    db.query(models.Users).filter(models.Users.email == email).update({"is_active": True})
+    db.commit()
+    return db.query(models.Users).filter(models.Users.email == email).first()
+
+def user_inactive(db: Session, email: EmailStr):
+    db.query(models.Users).filter(models.Users.email == email).update({"is_active": False})
+    db.commit()
+    return db.query(models.Users).filter(models.Users.email == email).first()
+
+def add_todo(db: Session, title: str, name: str, duedate: str, email: EmailStr):
+    user = get_user_by_email(db, email)
+    db_todo = models.Todo(title = title, name = name, duedate = duedate, user_id = user.id)
+    db.add(db_todo)
+    db.commit()
+    db.refresh()
+    return db_todo
