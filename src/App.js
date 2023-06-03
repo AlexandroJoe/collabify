@@ -93,6 +93,7 @@ const App = () => {
 
   const handleLogout = async () => {
     cleanInputs();
+    setHasAccount(true);
     const token = localStorage.getItem("token");
 
     const config = {
