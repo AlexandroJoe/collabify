@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
-import { fire, fs, auth } from "../config/firebase";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import TodoList from "./TodoList";
 import Notes from "./Notes";
 import "./Collabify.css";
-import { query, getDocs, collection, where, addDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import axios from 'axios';
 
 const Collabify = () => {
@@ -17,7 +14,6 @@ const Collabify = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [hasAccount, setHasAccount] = useState(true);
-  const dbuser = collection(fs, "users");
 
   const navigate = useNavigate();
 
@@ -47,9 +43,9 @@ const Collabify = () => {
         scope: "" 
         }), headers: { 'content-type': 'application/x-www-form-urlencoded;charset=UTF-8' } 
       });
-      // const token = response.data.access_token;
-      // localStorage.setItem('token', token);
 
+      response.json().then(response => localStorage.setItem('token', response.access_token));
+      
       const newUser = {
         email,
         password,
@@ -73,8 +69,8 @@ const Collabify = () => {
         { headers: { 'content-type': 'application/json' } }
       );
   
-      // const token = response.data.access_token;
-      // localStorage.setItem('token', token);
+      const token = response.data.access_token;
+      localStorage.setItem('token', token);
   
       // Create a user object with the necessary properties
       // const newUser = {
@@ -89,7 +85,7 @@ const Collabify = () => {
       // Store the user in localStorage
       // localStorage.setItem("user", JSON.stringify(newUser));
   
-      navigate("/collabify/todo"); // Navigate to the dashboard route after successful signup
+      navigate("/collabify"); // Navigate to the dashboard route after successful signup
     } catch (error) {
       if (error.response) {
         console.error('Error response:', error.response.data);
@@ -107,25 +103,11 @@ const Collabify = () => {
     console.log("clicked");
   };
 
-  const authListener = () => {
-    fire.auth().onAuthStateChanged((user) => {
-      if (user) {
-        cleanInputs();
-        setUser(user);
-        localStorage.setItem("user", JSON.stringify(user)); // Store user in localStorage
-      } else {
-        setUser(null);
-        localStorage.removeItem("user"); // Remove user from localStorage
-      }
-    });
-  };
-
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-    authListener();
   }, []);
 
   return (

@@ -51,6 +51,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 def index():
     return {"Collabify" : "Productive App to Help Your Study"}
 
+@collabify.get("")
+
 @collabify.post("/signup/", response_model = schemas.Users)
 async def signup(
     payload: schemas.CreateUserSchema,
@@ -63,7 +65,13 @@ async def signup(
     # mySalt = bcrypt.gensalt()
     # hashed_pass = bcrypt.hashpw(bytePwd, mySalt)
     hashed_pass = crud.pwd_context.hash(payload.password)
-    return crud.create_user(session, email = payload.email, password = hashed_pass)
+    crud.create_user(session, email = payload.email, password = hashed_pass)
+    access_token_expires = timedelta(minutes = 30)
+    access_token = crud.create_token(
+        data={"sub": payload.email}, expires_delta = access_token_expires
+    )
+    crud.user_active(session, email = payload.email)
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @collabify.post("/token", response_model = schemas.Token)
 async def login(
