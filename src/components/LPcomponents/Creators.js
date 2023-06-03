@@ -5,27 +5,30 @@ const Creators = () => {
     {
       image: "..",
       title: "Arish",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et sagittis duis elementum interdum facilisi bibendum.",
+      text: "Co-CEO",
     },
     {
       image: "..",
       title: "Claudio",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et ",
+      text: "Co-CEO",
     },
     {
       image: "..",
       title: "Jacques",
-      text: "Lorem ipsum dolor sit amet consectetur. Maecenas orci et lorem ipsum",
+      text: "Co-CEO",
     },
   ];
 
-  return <div className="creators-section-wrapper">
-    <div className="creators-section-top">
+  return (
+    <div className="creators-section-wrapper">
+      <div className="creators-section-top">
         <p className="primary-subheading">Creators</p>
         <h1 className="primary-heading">The faces behind Collabify</h1>
         <p className="primary-text">
-          Lorem ipsum dolor sit amet consectetur. Non tincidunt magna non et
-          elit. Dolor turpis molestie dui magnis facilisis at fringilla quam.
+          We would like to give attributions to the ones that have made
+          Collabify possible, 3 university students that decided to come together to
+          improve producticity. The faces of the 3 people that were the begining
+          of this wonderful app.
         </p>
       </div>
       <div className="creators-section-bottom">
@@ -39,7 +42,8 @@ const Creators = () => {
           </div>
         ))}
       </div>
-  </div>;
+    </div>
+  );
 };
 
 export default Creators;
