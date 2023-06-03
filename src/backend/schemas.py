@@ -27,3 +27,15 @@ class Token(BaseModel):
     
 class TokenData(BaseModel):
     email: EmailStr = None
+    
+class Todo(BaseModel):
+    todo_id: int
+    title: str
+    name: str
+    duedate: str
+    
+    class Config:
+        orm_mode = True
+        
+class UserTodo(Todo):
+    user_id: int

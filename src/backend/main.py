@@ -51,9 +51,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 def index():
     return {"Collabify" : "Productive App to Help Your Study"}
 
-@collabify.get("")
-
-@collabify.post("/signup/", response_model = schemas.Users)
+@collabify.post("/signup/", response_model = schemas.Token)
 async def signup(
     payload: schemas.CreateUserSchema,
     session: Session = Depends(get_db),
@@ -61,9 +59,6 @@ async def signup(
     db_user = crud.get_user_by_email(session, email = payload.email)
     if db_user:
         raise HTTPException(status_code = 400, detail = "Email already registered")
-    # bytePwd = payload.password.encode('utf-8')
-    # mySalt = bcrypt.gensalt()
-    # hashed_pass = bcrypt.hashpw(bytePwd, mySalt)
     hashed_pass = crud.pwd_context.hash(payload.password)
     crud.create_user(session, email = payload.email, password = hashed_pass)
     access_token_expires = timedelta(minutes = 30)
@@ -116,3 +111,22 @@ async def protected_route(
     token_data: schemas.TokenData = Depends(get_current_user)
 ):
     return {"Message": "Access granted"}
+
+@collabify.post("/add-todo/")
+def add_todo(
+    title: str,
+    name: str,
+    duedate: str,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.add_todo(session, title, name, duedate, token_data.email)
+
+@collabify.get("/get-todo/")
+def get_todo(
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    user = crud.get_user_by_email(session, token_data.email)
+    print(crud.get_todo(session, user.id))
+    return crud.get_todo(session, user.id)

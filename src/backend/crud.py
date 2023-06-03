@@ -70,5 +70,7 @@ def add_todo(db: Session, title: str, name: str, duedate: str, email: EmailStr):
     db_todo = models.Todo(title = title, name = name, duedate = duedate, user_id = user.id)
     db.add(db_todo)
     db.commit()
-    db.refresh()
     return db_todo
+
+def get_todo(db: Session, user_id: int):
+    return db.query(models.Todo).filter(models.Todo.user_id == user_id).all()
