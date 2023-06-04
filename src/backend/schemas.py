@@ -29,6 +29,7 @@ class TokenData(BaseModel):
     email: EmailStr = None
     
 class Todo(BaseModel):
+    todo_id: int
     title: str
     name: str
     duedate: str
@@ -38,4 +39,3 @@ class Todo(BaseModel):
         
 class UserTodo(Todo):
     user_id: int
-    todo_id: int

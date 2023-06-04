@@ -94,7 +94,9 @@ const Login = (props) => {
   }
 
   const isSignUpDisabled =
-    hasAccount || emailErrorSU || passwordErrorSU || confirmError;
+    hasAccount || emailErrorSU || passwordErrorSU || confirmError || !email ||
+    !password ||
+    !confirmPassword;
 
   return (
     <section className="login">
@@ -114,7 +116,7 @@ const Login = (props) => {
               value={email}
               onChange={handleEmailChange}
             />
-            {showError && email && <p className="errorMsg">{emailError}</p>}
+            {showError && <p className="errorMsg">{emailError}</p>}
             <label>Password</label>
             <input
               type="password"
@@ -122,7 +124,7 @@ const Login = (props) => {
               value={password}
               onChange={handlePasswordChange}
             />
-            {showError && password && <p className="errorMsg">{passwordError}</p>}
+            {showError && <p className="errorMsg">{passwordError}</p>}
           </>
         ) : (
           <>

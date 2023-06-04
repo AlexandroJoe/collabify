@@ -114,12 +114,13 @@ async def protected_route(
 
 @collabify.post("/add-todo/", response_model = schemas.Todo)
 def add_todo(
-    payload: schemas.Todo,
+    title: str,
+    name: str,
+    duedate: str,
     token_data: schemas.TokenData = Depends(get_current_user),
     session: Session = Depends(get_db)
 ):
-    print("title: ", payload.title, "name: ", payload.name, "duedate: ", payload.duedate)
-    return crud.add_todo(session, payload.title, payload.name, payload.duedate, token_data.email)
+    return crud.add_todo(session, title, name, duedate, token_data.email)
 
 @collabify.get("/get-todo/")
 def get_todo(
