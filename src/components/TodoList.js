@@ -62,28 +62,12 @@ function TodoList({ handleLogout }) {
     }
 
     const token = localStorage.getItem("token");
-    
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    axios
-      .post("http://localhost:8000/add-todo/", {title: "Todo", name: name, duedate: dueDate}, config)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    // const response = await axios.post(
-    //   "http://localhost:8000/add-todo/",
-    //   { title: "Todo", name: name, duedate: dueDate },
-    //   { headers: { Authorization: `Bearer ${token}` } }
-    // );
+    const response = await axios.post(
+      "http://localhost:8000/add-todo/",
+      { title: "New", name: name, duedate: dueDate },
+      { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+    );
 
     const newItem = {
       id: uuid(),
