@@ -34,7 +34,6 @@ const Dashboard = ({ handleLogout }) => {
           <FontAwesomeIcon icon={faProjectDiagram} className="dashboard-icon" />
           <span className="dashboard-button-text">Mind Map</span>
         </Link>
-        {/* Add more buttons with respective routes */}
       </div>
     </div>
   );

@@ -5,17 +5,17 @@ import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import NavBar from "./NavBar";
 import SideNavBar from "./SideNavBar";
-
+import { FaTrashAlt } from "react-icons/fa";
 function TodoList({ handleLogout }) {
   const [text, setText] = useState("");
   const [state, setState] = useState({
-    todo: {
-      title: "Todo",
-      items: [{ id: uuid(), name: "Clean the house", dueDate: "2023-05-31" }],
+    new: {
+      title: "New",
+      items: [{ id: uuid(), name: "Clean the house", dueDate: "2023-07-31" }],
     },
     "in-progress": {
       title: "In Progress",
-      items: [{ id: uuid(), name: "Wash the car", dueDate: "2023-06-02" }],
+      items: [{ id: uuid(), name: "Wash the car", dueDate: "2023-07-02" }],
     },
     done: {
       title: "Completed",
@@ -67,9 +67,9 @@ function TodoList({ handleLogout }) {
     setState((prev) => {
       return {
         ...prev,
-        todo: {
-          title: "Todo",
-          items: [newItem, ...prev.todo.items],
+        new: {
+          title: "New",
+          items: [newItem, ...prev.new.items],
         },
       };
     });
@@ -80,13 +80,33 @@ function TodoList({ handleLogout }) {
   };
 
   const removeItem = (listId, index) => {
-    if (listId === "todo" || listId === "in-progress" || listId === "done") {
+    if (listId === "new" || listId === "in-progress" || listId === "done") {
       setState((prev) => {
         const newState = { ...prev };
         newState[listId].items.splice(index, 1);
         return newState;
       });
     }
+  };
+
+  const removeAllTasks = (listId) => {
+    if (listId === "new" || listId === "in-progress" || listId === "done") {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete all tasks in this column?"
+      );
+      if (confirmed) {
+        setState((prev) => {
+          const newState = { ...prev };
+          newState[listId].items = [];
+          return newState;
+        });
+      }
+    }
+  };
+
+  const isDueDatePassed = (dueDate) => {
+    const today = new Date().toISOString().split("T")[0];
+    return dueDate < today;
   };
 
   const startEditing = (itemId, initialName, initialDueDate) => {
@@ -178,12 +198,6 @@ function TodoList({ handleLogout }) {
     }
   };
 
-  // const handleClickOutside = (e, itemId) => {
-  //   if (!e.target.closest(`#item-${itemId}`)) {
-  //     cancelEditing(itemId);
-  //   }
-  // };
-
   const handleInputFocus = (itemId) => {
     setLastFocusedInput(itemId);
   };
@@ -216,34 +230,34 @@ function TodoList({ handleLogout }) {
           <h1>Todo-wall</h1>
           <div className="adding">
             <div className="inputs">
-            <div>
-              <label htmlFor="itemName">Item Name: </label>
-              <input
-                type="text"
-                id="itemName"
-                placeholder="Add Item Name"
-                ref={addNameInputRef}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    addDueDateInputRef.current.focus();
-                  }
-                }}
-                onChange={(e) => setText(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="dueDate">Due Date: </label>
-              <input
-                type="date"
-                id="dueDate"
-                ref={addDueDateInputRef}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    addItem(text, addDueDateInputRef.current.value);
-                  }
-                }}
-              />
-            </div>
+              <div>
+                <label htmlFor="itemName">Item Name: </label>
+                <input
+                  type="text"
+                  id="itemName"
+                  placeholder="Add Item Name"
+                  ref={addNameInputRef}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      addDueDateInputRef.current.focus();
+                    }
+                  }}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              </div>
+              <div>
+                <label htmlFor="dueDate">Due Date: </label>
+                <input
+                  type="date"
+                  id="dueDate"
+                  ref={addDueDateInputRef}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      addItem(text, addDueDateInputRef.current.value);
+                    }
+                  }}
+                />
+              </div>
             </div>
             <div>
               <button
@@ -259,7 +273,15 @@ function TodoList({ handleLogout }) {
               {_.map(state, (data, key) => {
                 return (
                   <div key={key} className="column">
-                    <h3>{data.title}</h3>
+                    <div className="header-col">
+                      <h3>{data.title}</h3>
+                      <button
+                        className="remove-all"
+                        onClick={() => removeAllTasks(key)}
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </div>
                     <Droppable droppableId={key}>
                       {(provided) => {
                         return (
@@ -272,8 +294,8 @@ function TodoList({ handleLogout }) {
                               const isCompleted = key === "done";
                               const isEditing = !!editingItems[el.id];
                               const canEdit =
-                                !isCompleted &&
-                                (key === "todo" || key === "in-progress");
+                                !isDueDatePassed(el.dueDate) && !isCompleted &&
+                                (key === "new" || key === "in-progress");
                               const canRemove =
                                 !isEditing && (isCompleted || key !== "done");
 
@@ -290,7 +312,10 @@ function TodoList({ handleLogout }) {
                                         id={`item-${el.id}`}
                                         className={`item${
                                           isEditing ? " editing" : ""
-                                        } ${isDragging ? "item-dragging" : ""}`}
+                                        } ${
+                                          isDueDatePassed ? "due-date-passed" : ""
+                                        }
+                                        ${isDragging ? "item-dragging" : ""}`}
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
@@ -392,7 +417,6 @@ function TodoList({ handleLogout }) {
                                 </Draggable>
                               );
                             })}
-
                             {provided.placeholder}
                           </div>
                         );

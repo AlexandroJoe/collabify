@@ -88,6 +88,27 @@ body {
   border-radius: 10px;
 }
 
+.main-container .column:nth-child(1) {
+  background-color: rgb(25, 60, 164);
+}
+
+.main-container .column:nth-child(2) {
+  background-color: rgb(177, 182, 12);
+}
+
+.main-container .column:nth-child(3) {
+  background-color: rgb(80, 110, 44);
+}
+
+.main-container .column .header-col {
+  display: inline-flex;
+  justify-content:space-between;
+  align-items: center;
+  border-bottom: 1px solid white;
+  width: 100%;
+  margin: 0;
+}
+
 .main-container .column h3 {
   display: flex;
   justify-content: center;
@@ -95,13 +116,32 @@ body {
   margin: 10px;
 }
 
+.remove-all {
+  background-color: red;
+  padding: 5px;
+  cursor: pointer;
+  margin-left: 2rem;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.remove-all:hover {
+  background-color: rgb(162, 0, 0);
+}
+
+.remove-all svg {
+  color: white;
+}
+
 .droppable-col {
   max-width: 100%;
-  background-color: grey;
+  background-color: rgb(166, 234, 248);
   padding: 10px 10px;
   border-radius: 7px;
   display: flex;
   flex-direction: column;
+  margin-top: 2rem;
 }
 
 .item {
@@ -122,6 +162,10 @@ body {
 
 .item-dragging {
   border: 3px dashed white;
+}
+
+.due-date-passed {
+  background-color: rgb(89, 89, 89);
 }
 
 .edit-button,

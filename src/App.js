@@ -48,23 +48,26 @@ const App = () => {
         },
       });
 
-      response
-        .json()
-        .then((response) =>
-          localStorage.setItem("token", response.access_token)
-        );
-
-      const newUser = {
-        email,
-        password,
-      };
-
-      setUser(newUser);
-      navigate("/collabify/dashboard");
+      if (response.ok) {
+        const responseData = await response.json();
+        localStorage.setItem("token", responseData.access_token);
+  
+        const newUser = {
+          email,
+          password,
+        };
+  
+        setUser(newUser);
+        navigate("/collabify/dashboard");
+      } else {
+        throw new Error("Login failed");
+      }
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error.message);
+      setPasswordError("Invalid email or password");
     }
   };
+  
 
   const handleSignUp = async (email, password) => {
     cleanErrors();
@@ -92,6 +95,7 @@ const App = () => {
   };
 
   const handleLogout = async () => {
+    setUser("");
     cleanInputs();
     setHasAccount(true);
     const token = localStorage.getItem("token");
@@ -116,16 +120,11 @@ const App = () => {
     console.log("clicked");
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/collabify/dashboard");
-    }
-  }, []);
 
   return (
     <div className="App">
       <Routes>
+        <Route path="/" element={<LandingPage />}></Route>
         <Route
           path="/collabify/dashboard"
           element={<Dashboard handleLogout={handleLogout} />}
@@ -155,7 +154,6 @@ const App = () => {
           path="collabify/notes"
           element={<Notes handleLogout={handleLogout} />}
         />
-        <Route path="/" element={<LandingPage />}></Route>
       </Routes>
     </div>
   );
