@@ -146,7 +146,7 @@ body {
 
 .item {
   margin: 10px;
-  color: white;
+  color: rgb(1, 1, 1);
   border: 1px solid white;
   padding: 5px;
   border-radius: 7px;

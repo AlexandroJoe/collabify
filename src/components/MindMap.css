@@ -1,0 +1,12 @@
+.mindmap-container {
+    display: flex;
+    height: 100vh;
+    max-width: 100%; 
+    overflow: hidden;
+    overflow-x: auto;
+  }
+  
+  .mindmap-container .main-content {
+    flex: 1;
+    position: relative;
+  }
