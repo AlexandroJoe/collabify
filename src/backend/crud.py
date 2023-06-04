@@ -126,3 +126,9 @@ def add_notes(db: Session, title: str, body: str, time: str, email: EmailStr):
 def get_notes(db: Session, email: EmailStr):
     user = get_user_by_email(db, email)
     return db.query(models.Notes).filter(models.Notes.user_id == user.id).all()
+
+def delete_notes(db: Session, notes_id: int):
+    db_note = db.query(models.Notes).filter(models.Notes.notes_id == notes_id).first()
+    db.delete(db_note)
+    db.commit()
+    return db_note

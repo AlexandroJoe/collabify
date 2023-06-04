@@ -5,12 +5,22 @@ import Sidebar from "./Sidebar";
 import { v4 as uuid } from "uuid";
 import NavBar from "./NavBar";
 import SideNavBar from "./SideNavBar";
+import axios from 'axios';
 
 function Notes({ handleLogout }) {
   const [notes, setNotes] = useState([]);
   const [activeNote, setActiveNote] = useState(null); // this is the id of the active note
 
-  const onAddNote = () => {
+  const onAddNote = async () => {
+    const token = localStorage.getItem("token");
+    const dates = "" + Date.now();
+
+    const response = await axios.post(
+      "http://localhost:8000/add-notes/",
+      { title: "Untitled Note", body: "", time: dates },
+      { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+    );
+
     const newNote = {
       id: uuid(),
       title: "Untitled Note",

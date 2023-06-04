@@ -181,3 +181,11 @@ def get_notes(
     session: Session = Depends(get_db)
 ):
     return crud.get_notes(session, token_data.email)
+
+@collabify.delete("/delete-notes/")
+def delete_notes(
+    payload: schemas.DeleteNotes,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.delete_notes(session, payload.notes_id)

@@ -212,13 +212,13 @@ function TodoList({ handleLogout }) {
     if (listId === "new" || listId === "progress" || listId === "done") {
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:8000/delete-todo-id/", {
-            method: "DELETE",
-            body: JSON.stringify({todo_id: id}),
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${token}`
-            },
-          });
+        method: "DELETE",
+        body: JSON.stringify({todo_id: id}),
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+      });
       setState((prev) => {
         const newState = { ...prev };
         newState[listId].items.splice(index, 1);

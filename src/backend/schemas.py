@@ -61,3 +61,6 @@ class Notes(BaseModel):
     
     class Config:
         orm_mode = True
+
+class DeleteNotes(BaseModel):
+    notes_id: int
