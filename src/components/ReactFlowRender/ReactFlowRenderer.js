@@ -4,6 +4,8 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   ConnectionLineType,
+  Background,
+  BackgroundVariant,
 } from "react-flow-renderer";
 import { nodes as initialNodes, edges as initialEdges } from "./elements";
 import { Button, Modal, Input, Form, Dropdown, Menu } from "antd";
@@ -136,7 +138,10 @@ function ReactFlowRenderer() {
         fitView
         attributionPosition="bottom-left"
         connectionLineType={ConnectionLineType.SmoothStep}
-      />
+      >
+        <Background gap={20} color="#f1f1f1" variant={BackgroundVariant.Lines} />
+
+      </ReactFlow>
     </div>
   );
 }
