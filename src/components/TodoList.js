@@ -73,8 +73,9 @@ function TodoList({ handleLogout }) {
 
       for (var i = 0; i < responses.length; i++){
         if (responses[i].title === "New"){
+          const todo_id = "" + response[i].todo_id
           const newItem = {
-            id: responses[i].todo_id,
+            id: todo_id,
             name: responses[i].name,
             dueDate: responses[i].duedate,
           };
@@ -100,8 +101,9 @@ function TodoList({ handleLogout }) {
 
       for (var i = 0; i < responses.length; i++){
         if (responses[i].title === "In Progress"){
+          const todo_id = "" + response[i].todo_id
           const newItem = {
-            id: responses[i].todo_id,
+            id: todo_id,
             name: responses[i].name,
             dueDate: responses[i].duedate,
           };
@@ -127,8 +129,9 @@ function TodoList({ handleLogout }) {
 
       for (var i = 0; i < responses.length; i++){
         if (responses[i].title === "Completed"){
+          const todo_id = "" + response[i].todo_id
           const newItem = {
-            id: responses[i].todo_id,
+            id: todo_id,
             name: responses[i].name,
             dueDate: responses[i].duedate,
           };
