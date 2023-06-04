@@ -128,6 +128,14 @@ def update_todo(
 ):
     return crud.update_todo(session, payload)
 
+@collabify.put("/update-todo-id/", response_model = schemas.Todo)
+def update_todo_id(
+    payload: schemas.UpdateTitle,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.update_todo_title(session, payload)
+
 @collabify.get("/get-todo/")
 def get_todo(
     token_data: schemas.TokenData = Depends(get_current_user),

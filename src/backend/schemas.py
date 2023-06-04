@@ -49,3 +49,7 @@ class DeleteTodo(BaseModel):
     
 class DeleteTodoID(BaseModel):
     todo_id: int
+    
+class UpdateTitle(BaseModel):
+    todo_id: int
+    title: str

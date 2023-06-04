@@ -104,3 +104,14 @@ def update_todo(db: Session, payload: schemas.GetTodo):
     db.commit()
     db.refresh(db_todo)
     return db_todo
+
+def update_todo_title(db: Session, payload: schemas.UpdateTitle):
+    db_todo = db.query(models.Todo).filter(models.Todo.todo_id == payload.todo_id).first()
+    for var, value in vars(payload).items():
+        if value:
+            setattr(db_todo, var, value)
+        else:
+            None
+    db.commit()
+    db.refresh(db_todo)
+    return db_todo
