@@ -36,8 +36,13 @@ class Todo(BaseModel):
     class Config:
         orm_mode = True
         
-class GetTodo(Todo):
+class GetTodo(BaseModel):
+    name: str
+    duedate: str
     todo_id: int
         
 class UserTodo(Todo):
     user_id: int
+    
+class DeleteTodo(BaseModel):
+    title: str

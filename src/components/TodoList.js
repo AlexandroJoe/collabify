@@ -17,14 +17,14 @@ function TodoList({ handleLogout }) {
     },
     "in-progress": {
       title: "In Progress",
-      items: [{ id: uuid(), name: "Wash the car", dueDate: "2023-07-02" }],
+      items: [],
     },
     done: {
       title: "Completed",
       items: [],
     },
   });
-  
+  const [show, setShow] = useState(true);
   const [editingItems, setEditingItems] = useState({});
   const [lastFocusedInput, setLastFocusedInput] = useState(null);
   const addNameInputRef = useRef(null);
@@ -138,7 +138,7 @@ function TodoList({ handleLogout }) {
               ...prev,
               done: {
                 title: "Completed",
-                items: [newItem, ...prev.new.items],
+                items: [newItem, ...prev.done.items],
               },
             };
           });
@@ -151,8 +151,6 @@ function TodoList({ handleLogout }) {
     if (!name || !dueDate) {
       return;
     }
-
-    console.log(getAllNew());
 
     const token = localStorage.getItem("token");
 
@@ -193,12 +191,49 @@ function TodoList({ handleLogout }) {
     }
   };
 
-  const removeAllTasks = (listId) => {
+  const removeAllTasks = async (listId) => {
     if (listId === "new" || listId === "in-progress" || listId === "done") {
       const confirmed = window.confirm(
         "Are you sure you want to delete all tasks in this column?"
       );
       if (confirmed) {
+        const token = localStorage.getItem("token");
+
+        if (listId === "new"){
+          const  title = "New"
+
+          const response = await fetch("http://localhost:8000/delete-todo/", {
+            method: "DELETE",
+            body: JSON.stringify({title: title}),
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+          });
+        } else if (listId === "in-progress"){
+          const title = "In Progress"
+
+          const response = await fetch("http://localhost:8000/delete-todo/", {
+            method: "DELETE",
+            body: JSON.stringify({title: title}),
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+          });
+        } else if (listId === "done"){
+          const title = "Completed"
+
+          const response = await fetch("http://localhost:8000/delete-todo/", {
+            method: "DELETE",
+            body: JSON.stringify({title: title}),
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+          });
+        }
+
         setState((prev) => {
           const newState = { ...prev };
           newState[listId].items = [];
@@ -213,7 +248,7 @@ function TodoList({ handleLogout }) {
     return dueDate < today;
   };
 
-  const startEditing = (itemId, initialName, initialDueDate) => {
+  const startEditing = async (itemId, initialName, initialDueDate) => {
     if (state.done.items.some((item) => item.id === itemId)) {
       return;
     }
@@ -271,6 +306,14 @@ function TodoList({ handleLogout }) {
             editedItem.dueDate = editingItem.dueDate || editedItem.dueDate;
           }
           items[itemIndex] = editedItem;
+
+          const token = localStorage.getItem("token");
+
+          const response = axios.put(
+            "http://localhost:8000/update-todo/",
+            { name: editedItem.name, duedate: editedItem.dueDate, todo_id: itemId },
+            { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+          );
         }
       });
       return newState;
@@ -307,9 +350,13 @@ function TodoList({ handleLogout }) {
   };
 
   useEffect(() => {
-    getAllNew();
-    getAllInProgress();
-    getAllCompleted();
+    if (show){
+      getAllNew();
+      getAllInProgress();
+      getAllCompleted();
+      setShow(false);
+    }
+
     const handleClick = (e) => {
       Object.keys(editingItems).forEach((itemId) => {
         if (!e.target.closest(`#item-${itemId}`)) {
