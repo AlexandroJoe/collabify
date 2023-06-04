@@ -1,14 +1,16 @@
 import React from "react";
+import ceo1 from "./Arish.jpg"
+import ceo2 from "./Dio.jpg"
 
 const Creators = () => {
   const creatorsInfoData = [
     {
-      image: "..",
+      image: ceo1,
       title: "Arish",
       text: "Co-CEO",
     },
     {
-      image: "..",
+      image: ceo2,
       title: "Claudio",
       text: "Co-CEO",
     },

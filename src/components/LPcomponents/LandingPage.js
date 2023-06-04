@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import About from "./About";
 import Creators from "./Creators";
 import Features from "./Features";
@@ -14,9 +14,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import GroupIcon from '@mui/icons-material/Group';
-import AppsIcon from '@mui/icons-material/Apps';
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import GroupIcon from "@mui/icons-material/Group";
+import AppsIcon from "@mui/icons-material/Apps";
+import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import { FiArrowRight } from "react-icons/fi";
 import HomeBG from "./Productivity.jpg";
 import { BsTwitter } from "react-icons/bs";
@@ -24,8 +24,44 @@ import { SiLinkedin } from "react-icons/si";
 import { BsYoutube } from "react-icons/bs";
 import { FaFacebookF } from "react-icons/fa";
 
+const BackToTopButton = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => {
+    if (window.pageYOffset > 300) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", toggleVisibility);
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+    };
+  }, []);
+
+  return (
+    <button
+      className={`back-to-top-button ${isVisible ? "visible" : ""}`}
+      onClick={scrollToTop}
+    >
+      &#8593;
+    </button>
+  );
+};
+
 const LandingPage = () => {
   const [openMenu, setOpenMenu] = useState(false);
+
   const menuOptions = [
     {
       text: "Home",
@@ -54,7 +90,7 @@ const LandingPage = () => {
     if (element) {
       window.scrollTo({
         behavior: "smooth",
-        top: element.offsetTop - 50, 
+        top: element.offsetTop - 50,
       });
     }
   };
@@ -170,6 +206,7 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
+      <BackToTopButton />
     </>
   );
 };
