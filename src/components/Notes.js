@@ -9,7 +9,37 @@ import axios from 'axios';
 
 function Notes({ handleLogout }) {
   const [notes, setNotes] = useState([]);
+  const [show, setShow] = useState(true);
   const [activeNote, setActiveNote] = useState(null); // this is the id of the active note
+
+  const getNotes = async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      "http://localhost:8000/get-notes/",
+      { headers: {Authorization: `Bearer ${token}`} }
+    );
+
+    return response.data;
+  }
+
+  const showNotes = async () => {
+    const data = getNotes();
+    data.then(response => {
+      const responses = response
+
+      for (var i = 0; i < responses.length; i++){
+        const times = parseInt(responses[i].time)
+        const newNote = {
+          id: responses[i].id,
+          title: responses[i].title,
+          body: responses[i].body,
+          lastModified: times,
+        };
+
+        setNotes([newNote, ...notes]);
+      }
+    })
+  }
 
   const onAddNote = async () => {
     const token = localStorage.getItem("token");
@@ -48,6 +78,10 @@ function Notes({ handleLogout }) {
   };
 
   const getActiveNote = () => {
+    if (show){
+      showNotes();
+      setShow(false);
+    }
     return notes.find((note) => note.id === activeNote);
   }; // find the note to send it to the Main component
 
