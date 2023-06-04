@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const Sidebar = ({
   notes,
@@ -8,6 +8,8 @@ const Sidebar = ({
   setActiveNote,
 }) => {
   const sidebarRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredNotes, setFilteredNotes] = useState([]);
 
   useEffect(() => {
     const sidebarRefCurrent = sidebarRef.current;
@@ -35,13 +37,60 @@ const Sidebar = ({
     };
   }, [setActiveNote]);
 
-  const sortedNotes = notes.sort((a, b) => b.lastModified - a.lastModified);
+  useEffect(() => {
+    const filteredNotes = notes.filter((note) =>
+      note.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredNotes(filteredNotes);
+  }, [notes, searchQuery]);
+
+  const sortedNotes = filteredNotes.sort(
+    (a, b) => b.lastModified - a.lastModified
+  );
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const highlightMatchingLetters = (title, query) => {
+    const highlightedTitle = [];
+    let i = 0;
+    let j = 0;
+
+    while (i < title.length && j < query.length) {
+      if (title[i].toLowerCase() === query[j].toLowerCase()) {
+        highlightedTitle.push(
+          <span key={i} className="highlighted-letter">
+            {title[i]}
+          </span>
+        );
+        j++;
+      } else {
+        highlightedTitle.push(title[i]);
+      }
+      i++;
+    }
+
+    for (let k = i; k < title.length; k++) {
+      highlightedTitle.push(title[k]);
+    }
+
+    return highlightedTitle;
+  };
 
   return (
     <div className="sidebar" ref={sidebarRef}>
       <div className="sidebar-header">
         <h1>Notes</h1>
         <button onClick={onAddNote}>Add</button>
+      </div>
+      <div className="sidebar-search">
+        <input
+          type="text"
+          placeholder="Search notes..."
+          value={searchQuery}
+          onChange={handleSearch}
+        />
       </div>
       <div className="sidebar-notes">
         {sortedNotes.map((note) => (
@@ -51,7 +100,9 @@ const Sidebar = ({
             data-note-id={note.id}
           >
             <div className="sidebar-note-title">
-              <strong>{note.title}</strong>
+              <strong>
+                {highlightMatchingLetters(note.title, searchQuery)}
+              </strong>
               <button onClick={() => onDeleteNote(note.id)}>Delete</button>
             </div>
             <p>{note.body && note.body.substring(0, 100) + "..."}</p>
