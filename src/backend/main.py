@@ -120,6 +120,14 @@ def add_todo(
 ):
     return crud.add_todo(session, payload.title, payload.name, payload.duedate, token_data.email)
 
+@collabify.put("/update-todo/", response_model = schemas.Todo)
+def update_todo(
+    payload: schemas.GetTodo,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.update_todo(session, payload.title, payload.name, payload.duedate, payload.todo_id)
+
 @collabify.get("/get-todo/")
 def get_todo(
     token_data: schemas.TokenData = Depends(get_current_user),

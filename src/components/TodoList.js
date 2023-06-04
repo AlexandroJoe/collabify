@@ -13,7 +13,7 @@ function TodoList({ handleLogout }) {
   const [state, setState] = useState({
     new: {
       title: "New",
-      items: [{ id: uuid(), name: "Clean the house", dueDate: "2023-07-31" }],
+      items: [],
     },
     "in-progress": {
       title: "In Progress",
@@ -24,7 +24,7 @@ function TodoList({ handleLogout }) {
       items: [],
     },
   });
-
+  
   const [editingItems, setEditingItems] = useState({});
   const [lastFocusedInput, setLastFocusedInput] = useState(null);
   const addNameInputRef = useRef(null);
@@ -56,10 +56,103 @@ function TodoList({ handleLogout }) {
     });
   };
 
+  const getAllItem = async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      "http://localhost:8000/get-todo/",
+      { headers: {Authorization: `Bearer ${token}`} }
+    );
+
+    return response.data;
+  }
+
+  const getAllNew = () => {
+    const response = getAllItem();
+    response.then(response => {
+      const responses = response;
+
+      for (var i = 0; i < responses.length; i++){
+        if (responses[i].title === "New"){
+          const newItem = {
+            id: responses[i].todo_id,
+            name: responses[i].name,
+            dueDate: responses[i].duedate,
+          };
+  
+          setState((prev) => {
+            return {
+              ...prev,
+              new: {
+                title: "New",
+                items: [newItem, ...prev.new.items],
+              },
+            };
+          });
+        }
+      }
+    })
+  }
+
+  const getAllInProgress = () => {
+    const response = getAllItem();
+    response.then(response => {
+      const responses = response;
+
+      for (var i = 0; i < responses.length; i++){
+        if (responses[i].title === "In Progress"){
+          const newItem = {
+            id: responses[i].todo_id,
+            name: responses[i].name,
+            dueDate: responses[i].duedate,
+          };
+  
+          setState((prev) => {
+            return {
+              ...prev,
+              "in-progress": {
+                title: "In Progress",
+                items: [newItem, ...prev.new.items],
+              },
+            };
+          });
+        }
+      }
+    })
+  }
+
+  const getAllCompleted = () => {
+    const response = getAllItem();
+    response.then(response => {
+      const responses = response;
+
+      for (var i = 0; i < responses.length; i++){
+        if (responses[i].title === "Completed"){
+          const newItem = {
+            id: responses[i].todo_id,
+            name: responses[i].name,
+            dueDate: responses[i].duedate,
+          };
+  
+          setState((prev) => {
+            return {
+              ...prev,
+              done: {
+                title: "Completed",
+                items: [newItem, ...prev.new.items],
+              },
+            };
+          });
+        }
+      }
+    })
+  }
+
   const addItem = async (name, dueDate) => {
     if (!name || !dueDate) {
       return;
     }
+
+    console.log(getAllNew());
 
     const token = localStorage.getItem("token");
 
@@ -214,6 +307,9 @@ function TodoList({ handleLogout }) {
   };
 
   useEffect(() => {
+    getAllNew();
+    getAllInProgress();
+    getAllCompleted();
     const handleClick = (e) => {
       Object.keys(editingItems).forEach((itemId) => {
         if (!e.target.closest(`#item-${itemId}`)) {

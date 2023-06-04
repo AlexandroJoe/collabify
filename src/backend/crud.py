@@ -87,3 +87,8 @@ def delete_todo(db: Session, title: str, email: EmailStr):
         db.delete(item)
     db.commit()
     return db_todo
+
+def update_todo(db: Session, title: str, name: str, duedate: str, todo_id: int):
+    db.query(models.Todo).filter(models.Todo.todo_id == todo_id).update({title: title, name: name, duedate: duedate})
+    db.commit()
+    return db.query(models.Todo).filter(models.Todo.todo_id == todo_id).update({title: title, name: name, duedate: duedate})
