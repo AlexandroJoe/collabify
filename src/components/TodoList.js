@@ -5,7 +5,8 @@ import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import NavBar from "./NavBar";
 import SideNavBar from "./SideNavBar";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";import axios from 'axios';
+
 function TodoList({ handleLogout }) {
   const [text, setText] = useState("");
   const [state, setState] = useState({
@@ -29,6 +30,7 @@ function TodoList({ handleLogout }) {
   const addDueDateInputRef = useRef(null);
 
   const handleDragEnd = ({ destination, source }) => {
+    console.log(destination, source)
     if (!destination) {
       return;
     }
@@ -53,10 +55,34 @@ function TodoList({ handleLogout }) {
     });
   };
 
-  const addItem = (name, dueDate) => {
+  const addItem = async (name, dueDate) => {
     if (!name || !dueDate) {
       return;
     }
+
+    const token = localStorage.getItem("token");
+    
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios
+      .post("http://localhost:8000/add-todo/", {title: "Todo", name: name, duedate: dueDate}, config)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    // const response = await axios.post(
+    //   "http://localhost:8000/add-todo/",
+    //   { title: "Todo", name: name, duedate: dueDate },
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
 
     const newItem = {
       id: uuid(),
