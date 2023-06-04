@@ -34,6 +34,16 @@ const App = () => {
 
   const handleLogin = async (email, password) => {
     cleanErrors();
+    
+    if (!email || !password) {
+      // Check if any field is empty
+      if (!email) setEmailError("Please enter your email");
+      console.log(emailError)
+      if (!password) setPasswordError("Please enter your password");
+      console.log("hello")
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:8000/token", {
         method: "POST",
@@ -51,14 +61,16 @@ const App = () => {
       if (response.ok) {
         const responseData = await response.json();
         localStorage.setItem("token", responseData.access_token);
-  
+
         const newUser = {
           email,
           password,
         };
-  
+
         setUser(newUser);
         navigate("/collabify/dashboard");
+      } else if (response.status === 400) {
+        setEmailError("Email not registered or invalid");
       } else {
         throw new Error("Login failed");
       }
@@ -66,8 +78,9 @@ const App = () => {
       console.error(error.message);
       setPasswordError("Invalid email or password");
     }
+
+    setPassword("");
   };
-  
 
   const handleSignUp = async (email, password) => {
     cleanErrors();
@@ -119,7 +132,6 @@ const App = () => {
     navigate("/collabify/login", { replace: true });
     console.log("clicked");
   };
-
 
   return (
     <div className="App">
