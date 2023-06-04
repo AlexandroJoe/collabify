@@ -17,9 +17,9 @@ class Todo(Base):
     __tablename__ = "todo"
     
     todo_id = Column(Integer, primary_key = True, index = True)
-    title = Column(String, index = True, nullable = False)
-    name = Column(String, index = True, nullable = False)
-    duedate = Column(String, index = True, nullable = False)
+    title = Column(String)
+    name = Column(String)
+    duedate = Column(String)
     user_id = Column(Integer, ForeignKey("users.id"), index = True, nullable = False)
     
     owner = relationship("Users", back_populates = "todo")
