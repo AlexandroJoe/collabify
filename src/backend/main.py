@@ -150,3 +150,11 @@ def delete_todo(
     session: Session = Depends(get_db)
 ):
     return crud.delete_todo(session, payload.title, token_data.email)
+
+@collabify.delete("/delete-todo-id/")
+def delete_todo_id(
+    payload: schemas.DeleteTodoID,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.delete_todo_id(session, payload.todo_id)

@@ -181,8 +181,17 @@ function TodoList({ handleLogout }) {
     addDueDateInputRef.current.value = "";
   };
 
-  const removeItem = (listId, index) => {
+  const removeItem = async (listId, index, id) => {
     if (listId === "new" || listId === "in-progress" || listId === "done") {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:8000/delete-todo-id/", {
+            method: "DELETE",
+            body: JSON.stringify({todo_id: id}),
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+          });
       setState((prev) => {
         const newState = { ...prev };
         newState[listId].items.splice(index, 1);
@@ -557,7 +566,7 @@ function TodoList({ handleLogout }) {
                                               <button
                                                 className="remove-button"
                                                 onClick={() =>
-                                                  removeItem(key, index)
+                                                  removeItem(key, index, el.id)
                                                 }
                                               >
                                                 Remove

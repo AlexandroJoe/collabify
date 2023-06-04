@@ -88,6 +88,12 @@ def delete_todo(db: Session, title: str, email: EmailStr):
     db.commit()
     return db_todo
 
+def delete_todo_id(db: Session, todo_id: int):
+    db_todo = db.query(models.Todo).filter(models.Todo.todo_id == todo_id).first()
+    db.delete(db_todo)
+    db.commit()
+    return db_todo
+
 def update_todo(db: Session, payload: schemas.GetTodo):
     db_todo = db.query(models.Todo).filter(models.Todo.todo_id == payload.todo_id).first()
     for var, value in vars(payload).items():

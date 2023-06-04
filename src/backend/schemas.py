@@ -46,3 +46,6 @@ class UserTodo(Todo):
     
 class DeleteTodo(BaseModel):
     title: str
+    
+class DeleteTodoID(BaseModel):
+    todo_id: int
