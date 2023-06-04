@@ -72,5 +72,18 @@ def add_todo(db: Session, title: str, name: str, duedate: str, email: EmailStr):
     db.commit()
     return db_todo
 
-def get_todo(db: Session, user_id: int):
-    return db.query(models.Todo).filter(models.Todo.user_id == user_id).all()
+def get_todo(db: Session, email: EmailStr):
+    user = get_user_by_email(db, email)
+    return db.query(models.Todo).filter(models.Todo.user_id == user.id).all()
+
+def get_todo_title(db: Session, title: str, email: EmailStr):
+    user = get_user_by_email(db, email)
+    return db.query(models.Todo).filter(models.Todo.title == title, models.Todo.user_id == user.id).all()
+    
+def delete_todo(db: Session, title: str, email: EmailStr):
+    user = get_user_by_email(db, email)
+    db_todo = db.query(models.Todo).filter(models.Todo.title == title, models.Todo.user_id == user.id).all()
+    for item in db_todo:
+        db.delete(item)
+    db.commit()
+    return db_todo

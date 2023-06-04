@@ -121,11 +121,25 @@ def add_todo(
     print("title: ", payload.title, "name: ", payload.name, "duedate: ", payload.duedate)
     return crud.add_todo(session, payload.title, payload.name, payload.duedate, token_data.email)
 
-@collabify.get("/get-todo/", response_model = schemas.Todo)
+@collabify.get("/get-todo/")
 def get_todo(
     token_data: schemas.TokenData = Depends(get_current_user),
     session: Session = Depends(get_db)
 ):
-    user = crud.get_user_by_email(session, token_data.email)
-    print(crud.get_todo(session, user.id))
-    return crud.get_todo(session, user.id)
+    return crud.get_todo(session, token_data.email)
+
+@collabify.get("/get-todo-title/")
+def get_todo_title(
+    title: str,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.get_todo_title(session, title, token_data.email)
+
+@collabify.delete("/delete-todo/")
+def delete_todo(
+    title: str,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.delete_todo(session, title, token_data.email)

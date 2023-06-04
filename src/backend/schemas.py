@@ -35,7 +35,7 @@ class Todo(BaseModel):
     
     class Config:
         orm_mode = True
-         
+        
 class UserTodo(Todo):
     user_id: int
     todo_id: int

@@ -5,7 +5,8 @@ import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import NavBar from "./NavBar";
 import SideNavBar from "./SideNavBar";
-import { FaTrashAlt } from "react-icons/fa";import axios from 'axios';
+import { FaTrashAlt } from "react-icons/fa";
+import axios from 'axios';
 
 function TodoList({ handleLogout }) {
   const [text, setText] = useState("");
