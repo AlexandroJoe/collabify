@@ -7,6 +7,7 @@ import Notes from "./components/Notes";
 import LandingPage from "./components/LPcomponents/LandingPage";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
+import MindMap from "./components/MindMap";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -165,6 +166,10 @@ const App = () => {
         <Route
           path="collabify/notes"
           element={<Notes handleLogout={handleLogout} />}
+        />
+        <Route
+          path="collabify/mindmap"
+          element={<MindMap handleLogout={handleLogout} />}
         />
       </Routes>
     </div>

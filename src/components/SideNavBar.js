@@ -39,7 +39,7 @@ const SideNavBar = () => {
           </Link>
         </li>
         <li className={`nav-item ${isActivePage("/collabify/mindmap") ? "active" : ""}`}>
-          <Link to={"/"} className="nav-link">
+          <Link to={"/collabify/mindmap"} className="nav-link">
             <FaProjectDiagram className="icon" />
             <span className="nav-text">Mind mapping</span>
           </Link>

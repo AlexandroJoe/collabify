@@ -47,16 +47,21 @@
   box-shadow: 0 50px 70px -20px rgba(0, 0, 0, 0.8);
 }
 
-.appName {
+.login .appName {
   display: inline-flex;
   margin-left: 10px;
 }
 
-.appName:hover {
+.login .appName:hover {
     cursor: pointer;
 }
 
-.appName img {
+.login .appName h1 {
+  margin-top: 1rem;
+  font-weight: 1000;
+}
+
+.login .appName img {
   width: 40px;
   height: 40px;
   margin-top: 15px;

@@ -35,6 +35,8 @@ body {
 .nav-logo-container {
   color: white;
   margin-left: 20px;
+  margin-top: 1rem;
+  font-weight: 1000;
 }
 
 .navbar-menu-container {

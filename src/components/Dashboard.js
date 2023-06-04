@@ -30,7 +30,7 @@ const Dashboard = ({ handleLogout }) => {
           <AiFillRobot className="dashboard-icon" />
           <span className="dashboard-button-text">Chat with AI</span>
         </Link>
-        <Link to="/mind-map" className="dashboard-button-link dashboard-button">
+        <Link to="/collabify/mindmap" className="dashboard-button-link dashboard-button">
           <FontAwesomeIcon icon={faProjectDiagram} className="dashboard-icon" />
           <span className="dashboard-button-text">Mind Map</span>
         </Link>
