@@ -83,7 +83,7 @@ async def login(
             detail = "Incorrect username or password",
             headers = {"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes = 30)
+    access_token_expires = timedelta(minutes = 240)
     access_token = crud.create_token(
         data={"sub": check_user.email}, expires_delta = access_token_expires
     )

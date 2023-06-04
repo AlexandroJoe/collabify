@@ -37,6 +37,7 @@ function Notes({ handleLogout }) {
         };
 
         setNotes([newNote, ...notes]);
+        console.log(notes)
       }
     })
   }
@@ -73,7 +74,16 @@ function Notes({ handleLogout }) {
     setNotes(updatedNotesArray);
   };
 
-  const onDeleteNote = (idToDelete) => {
+  const onDeleteNote = async (idToDelete) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:8000/delete-notes/", {
+      method: "DELETE",
+      body: JSON.stringify({notes_id: idToDelete}),
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+    });
     setNotes(notes.filter((note) => note.id !== idToDelete));
   };
 
