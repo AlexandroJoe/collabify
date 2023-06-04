@@ -30,13 +30,13 @@ function Notes({ handleLogout }) {
       for (var i = 0; i < responses.length; i++){
         const times = parseInt(responses[i].time)
         const newNote = {
-          id: responses[i].id,
+          id: responses[i].notes_id,
           title: responses[i].title,
           body: responses[i].body,
           lastModified: times,
         };
 
-        setNotes([newNote, ...notes]);
+        setNotes((prevNotes) => [newNote, ...prevNotes]);
         console.log(notes)
       }
     })
@@ -63,6 +63,14 @@ function Notes({ handleLogout }) {
   };
 
   const onUpdateNote = (updatedNote) => {
+    console.log(updatedNote)
+    const token = localStorage.getItem("token");
+
+    const response = axios.put(
+      "http://localhost:8000/update-notes/",
+      { title: updatedNote.title, body: updatedNote.body, notes_id: updatedNote.notes_id },
+      { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+    );
     const updatedNotesArray = notes.map((note) => {
       if (note.id === activeNote) {
         return updatedNote;

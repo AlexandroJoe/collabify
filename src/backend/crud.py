@@ -132,3 +132,14 @@ def delete_notes(db: Session, notes_id: int):
     db.delete(db_note)
     db.commit()
     return db_note
+
+def update_notes(db: Session, payload: schemas.GetNotes):
+    db_notes = db.query(models.Notes).filter(models.Notes.notes_id == payload.notes_id).first()
+    for var, value in vars(payload).items():
+        if value:
+            setattr(db_notes, var, value)
+        else:
+            None
+    db.commit()
+    db.refresh(db_notes)
+    return db_notes
