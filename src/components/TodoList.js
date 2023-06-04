@@ -31,7 +31,6 @@ function TodoList({ handleLogout }) {
   const addDueDateInputRef = useRef(null);
 
   const handleDragEnd = ({ destination, source }) => {
-    console.log(destination, source)
     if (!destination) {
       return;
     }

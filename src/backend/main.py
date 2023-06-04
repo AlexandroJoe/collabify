@@ -166,3 +166,18 @@ def delete_todo_id(
     session: Session = Depends(get_db)
 ):
     return crud.delete_todo_id(session, payload.todo_id)
+
+@collabify.post("/add-notes/", response_model = schemas.Notes)
+def add_notes(
+    payload: schemas.Notes,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.add_notes(session, payload.title, payload.body, payload.time, token_data.email)
+
+@collabify.get("/get-notes/")
+def get_notes(
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.get_notes(session, token_data.email)

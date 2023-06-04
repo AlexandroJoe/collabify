@@ -53,3 +53,11 @@ class DeleteTodoID(BaseModel):
 class UpdateTitle(BaseModel):
     todo_id: int
     title: str
+    
+class Notes(BaseModel):
+    title: str
+    body: str
+    time: str
+    
+    class Config:
+        orm_mode = True

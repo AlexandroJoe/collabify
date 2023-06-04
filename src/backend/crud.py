@@ -115,3 +115,14 @@ def update_todo_title(db: Session, payload: schemas.UpdateTitle):
     db.commit()
     db.refresh(db_todo)
     return db_todo
+
+def add_notes(db: Session, title: str, body: str, time: str, email: EmailStr):
+    user = get_user_by_email(db, email)
+    db_note = models.Notes(title = title, body = body, time = time, user_id = user.id)
+    db.add(db_note)
+    db.commit()
+    return db_note
+
+def get_notes(db: Session, email: EmailStr):
+    user = get_user_by_email(db, email)
+    return db.query(models.Notes).filter(models.Notes.user_id == user.id).all()
