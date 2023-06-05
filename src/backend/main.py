@@ -204,3 +204,18 @@ def delete_notes(
     session: Session = Depends(get_db)
 ):
     return crud.delete_notes(session, payload.notes_id)
+
+@collabify.post("/add-map/", response_model = schemas.Map)
+def add_map(
+    payload: schemas.Map,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.add_map(session, payload.data, payload.x, payload.y, payload.source, payload.target, token_data.email)
+    
+@collabify.get("/get-map/")
+def get_map(
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.get_map(session, token_data.email)

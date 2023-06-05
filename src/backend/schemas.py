@@ -69,3 +69,10 @@ class GetNotes(BaseModel):
 
 class DeleteNotes(BaseModel):
     notes_id: int
+    
+class Map(BaseModel):
+    data: str
+    x: int
+    y: int
+    source: int
+    target: int

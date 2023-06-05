@@ -150,3 +150,14 @@ def update_notes(db: Session, payload: schemas.GetNotes):
     db.commit()
     db.refresh(db_notes)
     return db_notes
+
+def add_map(db: Session, data: str, x: int, y: int, source: int, target: int, email: EmailStr):
+    user = get_user_by_email(db, email)
+    db_map = models.Map(data = data, x = x, y = y, source = source, target = target, user_id = user.id)
+    db.add(db_map)
+    db.commit()
+    return db_map
+
+def get_map(db: Session, email: EmailStr):
+    user = get_user_by_email(db, email)
+    return db.query(models.Map).filter(models.Map.user_id == user.id).all()

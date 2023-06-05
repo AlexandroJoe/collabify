@@ -13,6 +13,7 @@ class Users(Base):
     
     todo = relationship("Todo", back_populates = "owner")
     notes = relationship("Notes", back_populates = "owners")
+    maps = relationship("Map", back_populates = "owners_")
     
 class Todo(Base):
     __tablename__ = "todo"
@@ -35,3 +36,16 @@ class Notes(Base):
     user_id = Column(Integer, ForeignKey("users.id"), index = True, nullable = False)
     
     owners = relationship("Users", back_populates = "notes")
+    
+class Map(Base):
+    __tablename__ = "maps"
+    
+    map_id = Column(Integer, primary_key = True, index = True)
+    data = Column(String, index = True, nullable = False)
+    x = Column(Integer, index = True, nullable = False)
+    y = Column(Integer, index = True, nullable = False)
+    source = Column(Integer, index = True, nullable = False)
+    target = Column(Integer, index = True, nullable = False)
+    user_id = Column(Integer, ForeignKey("users.id"), index = True, nullable = False)
+    
+    owners_ = relationship("Users", back_populates = "maps")
