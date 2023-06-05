@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 import NavBar from "./NavBar";
 import SideNavBar from "./SideNavBar";
 import { FaTrashAlt } from "react-icons/fa";
-import axios from 'axios';
+import axios from "axios";
 
 function TodoList({ handleLogout }) {
   const [text, setText] = useState("");
@@ -44,30 +44,44 @@ function TodoList({ handleLogout }) {
 
     const itemCopy = { ...state[source.droppableId].items[source.index] };
     const token = localStorage.getItem("token");
-    if (destination.droppableId === "new"){
+    if (destination.droppableId === "new") {
       const title = "New";
       const response = axios.put(
         "http://localhost:8000/update-todo-id/",
         { todo_id: itemCopy.id, title: title },
-        { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-    } else if (destination.droppableId === "progress"){
+    } else if (destination.droppableId === "progress") {
       const title = "In Progress";
       const response = axios.put(
         "http://localhost:8000/update-todo-id/",
         { todo_id: itemCopy.id, title: title },
-        { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-    } else if (destination.droppableId === "done"){
+    } else if (destination.droppableId === "done") {
       const title = "Completed";
       const response = axios.put(
         "http://localhost:8000/update-todo-id/",
         { todo_id: itemCopy.id, title: title },
-        { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
     }
-    
-    
+
     setState((prev) => {
       prev = { ...prev };
       prev[source.droppableId].items.splice(source.index, 1);
@@ -82,28 +96,27 @@ function TodoList({ handleLogout }) {
 
   const getAllItem = async () => {
     const token = localStorage.getItem("token");
-    const response = await axios.get(
-      "http://localhost:8000/get-todo/",
-      { headers: {Authorization: `Bearer ${token}`} }
-    );
+    const response = await axios.get("http://localhost:8000/get-todo/", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     return response.data;
-  }
+  };
 
   const getAllNew = () => {
     const response = getAllItem();
-    response.then(response => {
+    response.then((response) => {
       const responses = response;
 
-      for (var i = 0; i < responses.length; i++){
-        if (responses[i].title === "New"){
-          const todo_id = "" + response[i].todo_id
+      for (var i = 0; i < responses.length; i++) {
+        if (responses[i].title === "New") {
+          const todo_id = "" + response[i].todo_id;
           const newItem = {
             id: todo_id,
             name: responses[i].name,
             dueDate: responses[i].duedate,
           };
-  
+
           setState((prev) => {
             return {
               ...prev,
@@ -115,23 +128,23 @@ function TodoList({ handleLogout }) {
           });
         }
       }
-    })
-  }
+    });
+  };
 
   const getAllInProgress = () => {
     const response = getAllItem();
-    response.then(response => {
+    response.then((response) => {
       const responses = response;
 
-      for (var i = 0; i < responses.length; i++){
-        if (responses[i].title === "In Progress"){
-          const todo_id = "" + response[i].todo_id
+      for (var i = 0; i < responses.length; i++) {
+        if (responses[i].title === "In Progress") {
+          const todo_id = "" + response[i].todo_id;
           const newItem = {
             id: todo_id,
             name: responses[i].name,
             dueDate: responses[i].duedate,
           };
-  
+
           setState((prev) => {
             return {
               ...prev,
@@ -143,23 +156,23 @@ function TodoList({ handleLogout }) {
           });
         }
       }
-    })
-  }
+    });
+  };
 
   const getAllCompleted = () => {
     const response = getAllItem();
-    response.then(response => {
+    response.then((response) => {
       const responses = response;
 
-      for (var i = 0; i < responses.length; i++){
-        if (responses[i].title === "Completed"){
-          const todo_id = "" + response[i].todo_id
+      for (var i = 0; i < responses.length; i++) {
+        if (responses[i].title === "Completed") {
+          const todo_id = "" + response[i].todo_id;
           const newItem = {
             id: todo_id,
             name: responses[i].name,
             dueDate: responses[i].duedate,
           };
-  
+
           setState((prev) => {
             return {
               ...prev,
@@ -171,8 +184,8 @@ function TodoList({ handleLogout }) {
           });
         }
       }
-    })
-  }
+    });
+  };
 
   const addItem = async (name, dueDate) => {
     if (!name || !dueDate) {
@@ -184,13 +197,17 @@ function TodoList({ handleLogout }) {
     const response = await axios.post(
       "http://localhost:8000/add-todo/",
       { title: "New", name: name, duedate: dueDate },
-      { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+      {
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
-    const responses = await axios.get(
-      "http://localhost:8000/get-todo-last/",
-      { headers: {Authorization: `Bearer ${token}`} }
-    );
+    const responses = await axios.get("http://localhost:8000/get-todo-last/", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     const id = "" + responses.data.todo_id;
 
@@ -220,10 +237,10 @@ function TodoList({ handleLogout }) {
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:8000/delete-todo-id/", {
         method: "DELETE",
-        body: JSON.stringify({todo_id: id}),
+        body: JSON.stringify({ todo_id: id }),
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
       });
       setState((prev) => {
@@ -242,37 +259,37 @@ function TodoList({ handleLogout }) {
       if (confirmed) {
         const token = localStorage.getItem("token");
 
-        if (listId === "new"){
-          const  title = "New"
+        if (listId === "new") {
+          const title = "New";
 
           const response = await fetch("http://localhost:8000/delete-todo/", {
             method: "DELETE",
-            body: JSON.stringify({title: title}),
+            body: JSON.stringify({ title: title }),
             headers: {
               "content-type": "application/json",
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
             },
           });
-        } else if (listId === "progress"){
-          const title = "In Progress"
+        } else if (listId === "progress") {
+          const title = "In Progress";
 
           const response = await fetch("http://localhost:8000/delete-todo/", {
             method: "DELETE",
-            body: JSON.stringify({title: title}),
+            body: JSON.stringify({ title: title }),
             headers: {
               "content-type": "application/json",
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
             },
           });
-        } else if (listId === "done"){
-          const title = "Completed"
+        } else if (listId === "done") {
+          const title = "Completed";
 
           const response = await fetch("http://localhost:8000/delete-todo/", {
             method: "DELETE",
-            body: JSON.stringify({title: title}),
+            body: JSON.stringify({ title: title }),
             headers: {
               "content-type": "application/json",
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
             },
           });
         }
@@ -288,6 +305,7 @@ function TodoList({ handleLogout }) {
 
   const isDueDatePassed = (dueDate) => {
     const today = new Date().toISOString().split("T")[0];
+    console.log(dueDate < today);
     return dueDate < today;
   };
 
@@ -354,8 +372,17 @@ function TodoList({ handleLogout }) {
 
           const response = axios.put(
             "http://localhost:8000/update-todo/",
-            { name: editedItem.name, duedate: editedItem.dueDate, todo_id: itemId },
-            { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+            {
+              name: editedItem.name,
+              duedate: editedItem.dueDate,
+              todo_id: itemId,
+            },
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
         }
       });
@@ -393,7 +420,7 @@ function TodoList({ handleLogout }) {
   };
 
   useEffect(() => {
-    if (show){
+    if (show) {
       getAllNew();
       getAllInProgress();
       getAllCompleted();
@@ -491,7 +518,8 @@ function TodoList({ handleLogout }) {
                               const isCompleted = key === "done";
                               const isEditing = !!editingItems[el.id];
                               const canEdit =
-                                !isDueDatePassed(el.dueDate) && !isCompleted &&
+                                !isDueDatePassed(el.dueDate) &&
+                                !isCompleted &&
                                 (key === "new" || key === "progress");
                               const canRemove =
                                 !isEditing && (isCompleted || key !== "done");
@@ -510,7 +538,9 @@ function TodoList({ handleLogout }) {
                                         className={`item${
                                           isEditing ? " editing" : ""
                                         } ${
-                                          isDueDatePassed ? "due-date-passed" : ""
+                                          isDueDatePassed(el.dueDate)
+                                            ? "due-date-passed"
+                                            : ""
                                         }
                                         ${isDragging ? "item-dragging" : ""}`}
                                         ref={provided.innerRef}
@@ -577,9 +607,14 @@ function TodoList({ handleLogout }) {
                                           </>
                                         ) : (
                                           <>
-                                            <div>{el.name}</div>
-                                            <div>
-                                              {"Due date --> "}
+                                            <div className="content name">
+                                              {el.name}
+                                            </div>
+                                            <div className="content date">
+                                              {isDueDatePassed(el.dueDate)
+                                                ? "! "
+                                                : ""}
+                                              {"Due date: "}
                                               {el.dueDate}
                                             </div>
                                             {canEdit && (

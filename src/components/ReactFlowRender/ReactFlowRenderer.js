@@ -9,7 +9,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import { nodes as initialNodes, edges as initialEdges } from "./elements";
 import { Button, Modal, Input, Form, Dropdown, Menu } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { DeleteOutlined, DownOutlined } from "@ant-design/icons";
 import axios from 'axios';
 
 function ReactFlowRenderer() {
@@ -115,7 +115,7 @@ function ReactFlowRenderer() {
   };
 
   return (
-    <div style={{ height: "100vh", margin: "10px" }}>
+    <div style={{ height: "77vh", margin: "1rem" }}>
       <Modal title="Basic Modal" open={isModalVisible} onCancel={handleCancel}>
         <Form onFinish={handleOk} autoComplete="off" name="new node">
           <Form.Item label="Node Name" name="nodeName">
@@ -131,7 +131,7 @@ function ReactFlowRenderer() {
       </Modal>
 
       <div className="buttons">
-        <Button type="primary" onClick={displayCustomNamedNodeModal}>
+        <Button className="node-buttons add" type="primary" onClick={displayCustomNamedNodeModal}>
           Add Node
         </Button>
 
@@ -141,7 +141,7 @@ function ReactFlowRenderer() {
               {nodes.map((node) => (
                 <Menu.Item key={node.id}>
                   <Button onClick={() => handleDelete(node.id)}>
-                    {node.data.label}
+                    <DeleteOutlined/> {node.data.label}
                   </Button>
                 </Menu.Item>
               ))}
@@ -150,7 +150,7 @@ function ReactFlowRenderer() {
           open={deleteDropdownVisible}
           onOpenChange={handleDeleteDropdownVisibleChange}
         >
-          <Button type="primary" onClick={handleDeleteClick}>
+          <Button className="node-buttons delete" type="primary" onClick={handleDeleteClick}>
             Delete <DownOutlined />
           </Button>
         </Dropdown>

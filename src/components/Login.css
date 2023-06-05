@@ -161,3 +161,50 @@
   background-color: #006eff;
   color: #ffffff;
 }
+
+.login .loginContainer .password-input-container {
+  position: relative;
+}
+
+.login .loginContainer .password-input-container input[type="password"] {
+  padding-right: 40px;  
+}
+
+.login .loginContainer .toggle-password-button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  z-index: 2;
+  outline: none;
+}
+
+.login .loginContainer .toggle-password-button svg {
+  transition: fill 0.3s ease;
+  opacity: 0.8;
+}
+
+
+/* Style for  usual show password button */
+.login .loginContainer .toggle-password-button {
+  background-color: transparent;
+  border: none;
+}
+
+.login .loginContainer .toggle-password-button:focus {
+  outline: none;
+}
+
+.login .loginContainer .toggle-password-button svg {
+  width: 20px;
+  height: 20px;
+}

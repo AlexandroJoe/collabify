@@ -2,7 +2,7 @@ import NavBar from "./NavBar";
 import ReactFlowRenderer from "./ReactFlowRender";
 import "antd/dist/reset.css";
 import SideNavBar from "./SideNavBar";
-import "./MindMap.css"
+import "./MindMap.css";
 
 function MindMap({ handleLogout }) {
   return (
@@ -12,10 +12,11 @@ function MindMap({ handleLogout }) {
       </div>
       <div className="main-content">
         <NavBar
-          welcomeText={"Welcome to your own notepad!"}
+          welcomeText={"Start vizualizing your thread of ideas now!"}
           handleLogout={handleLogout}
         />
         <div className="main-container">
+          <h1>MindMap</h1>
           <ReactFlowRenderer />
         </div>
       </div>

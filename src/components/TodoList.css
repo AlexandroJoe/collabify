@@ -77,11 +77,11 @@ body {
 }
 
 .main-container .column {
-  width: 20%;
-  min-height: 400px;
+  width: 25%;
+  min-height: 30rem;
   height: 100%;
-  margin: 10px;
-  padding: 10px;
+  margin: 0.625rem;
+  padding: 0.625rem;
   border: 1px solid black;
   align-items: center;
   background-color: rgb(33, 28, 28);
@@ -89,15 +89,27 @@ body {
 }
 
 .main-container .column:nth-child(1) {
-  background-color: rgb(25, 60, 164);
+  background-color: #296eb4;
+}
+
+.main-container .column:nth-child(1) .droppable-col{
+  background-color: #3589dd;
 }
 
 .main-container .column:nth-child(2) {
-  background-color: rgb(177, 182, 12);
+  background-color: #ff9505;
+}
+
+.main-container .column:nth-child(2) .droppable-col{
+  background-color: #dc8000;
 }
 
 .main-container .column:nth-child(3) {
-  background-color: rgb(80, 110, 44);
+  background-color: #a5be00;
+}
+
+.main-container .column:nth-child(3) .droppable-col{
+  background-color: #93a900;
 }
 
 .main-container .column .header-col {
@@ -114,6 +126,7 @@ body {
   justify-content: center;
   color: white;
   margin: 10px;
+  font-weight: 800;
 }
 
 .remove-all {
@@ -136,12 +149,11 @@ body {
 
 .droppable-col {
   max-width: 100%;
-  background-color: rgb(166, 234, 248);
   padding: 10px 10px;
   border-radius: 7px;
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
+  margin: 2rem 1rem 0 1rem;
 }
 
 .item {
@@ -150,7 +162,7 @@ body {
   border: 1px solid white;
   padding: 5px;
   border-radius: 7px;
-  background-color: rgb(36, 29, 29);
+  background-color: rgba(255, 255, 255, 0.675);
   word-wrap: break-word;
 }
 
@@ -162,10 +174,19 @@ body {
 
 .item-dragging {
   border: 3px dashed white;
+  background-color: rgba(255, 255, 255);
 }
 
 .due-date-passed {
-  background-color: rgb(89, 89, 89);
+  background-color: rgba(81, 81, 81, 0.625);
+}
+
+.due-date-passed .content {
+  color: white;
+}
+
+.due-date-passed .content.date {
+  color: #ff8080;
 }
 
 .edit-button,
@@ -175,13 +196,27 @@ body {
   height: 2rem;
   border-radius: 10px;
   font-size: 0.9rem;
-  background-color: #c7c5d1;
+  background-color: #fafafa;
 }
 
 .edit-button:hover,
 .remove-button:hover {
   cursor: pointer;
-  background-color: #918f9b;
+}
+
+.edit-button:hover {
+  color: white;
+  background-color: #296eb4;
+}
+
+.remove-button:hover {
+  color: white;
+  background-color: red;
+}
+
+.edit-input {
+  border-radius: 5px;
+  padding: 0.2rem;
 }
 
 .edit-confirm,
@@ -196,10 +231,10 @@ body {
   align-items: center;
 }
 
-.edit-confirm {
-  background-color: rgb(0, 87, 0);
+.edit-confirm:hover {
+  background-color: rgb(2, 192, 2);
 }
 
-.edit-cancel {
-  background-color: red;
+.edit-cancel:hover {
+  background-color: rgb(223, 0, 0);
 }
