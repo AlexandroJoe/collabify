@@ -74,15 +74,17 @@ function ReactFlowRenderer() {
       const responses = response
 
       for (var i = 0; i < responses.length; i++){
-        const id = "" + responses.map_id;
+        const id = "" + responses[i].map_id;
         const newNode = {
           id: id,
-          data: { label: responses.data },
+          data: { label: responses[i].data },
           position: {
-            x: responses.x,
-            y: responses.y,
+            x: responses[i].x,
+            y: responses[i].y,
           },
         };
+
+        console.log(responses)
 
         setNodes((nds) => nds.concat(newNode));
       }
@@ -104,17 +106,21 @@ function ReactFlowRenderer() {
         { headers: {Authorization: `Bearer ${token}`} }
       );
 
-      const id = "" + responses.data.map_id
+      responses.then((response) => {
+        const responses = response.data;
 
-      const newNode = {
-        id: id,
-        data: { label: responses.data.data },
-        position: {
-          x: responses.data.x,
-          y: responses.data.y,
-        },
-      };
-      setNodes((nds) => nds.concat(newNode));
+        const id = "" + responses.map_id
+
+        const newNode = {
+          id: id,
+          data: { label: responses.data },
+          position: {
+            x: responses.x,
+            y: responses.y,
+          },
+        };
+        setNodes((nds) => nds.concat(newNode));
+        })
     },
     [setNodes]
   );
