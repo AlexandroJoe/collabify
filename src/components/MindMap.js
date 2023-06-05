@@ -12,7 +12,7 @@ function MindMap({ handleLogout }) {
       </div>
       <div className="main-content">
         <NavBar
-          welcomeText={"Welcome to your own notepad!"}
+          welcomeText={"Start vizualizing your thread of ideas now!"}
           handleLogout={handleLogout}
         />
         <div className="main-container">
