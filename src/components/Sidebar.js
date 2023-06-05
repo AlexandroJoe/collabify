@@ -38,6 +38,7 @@ const Sidebar = ({
   }, [setActiveNote]);
 
   useEffect(() => {
+    console.log(activeNote);
     const filteredNotes = notes.filter((note) =>
       note.title.toLowerCase().includes(searchQuery.toLowerCase())
     );

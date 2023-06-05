@@ -17,6 +17,7 @@ function ReactFlowRenderer() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteDropdownVisible, setDeleteDropdownVisible] = useState(false);
+  const [show, setShow] = useState(true);
 
   const onConnect = useCallback(
     (params) =>
@@ -37,6 +38,10 @@ function ReactFlowRenderer() {
   const getNodeId = () => Math.random();
 
   function onInit() {
+    if (show){
+      showMap();
+      setShow(false);
+    }
     console.log("Logged");
   }
 
@@ -53,10 +58,40 @@ function ReactFlowRenderer() {
     setIsModalVisible(false);
   }
 
+  const getMap = async() => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      "http://localhost:8000/get-map/",
+      { headers: {Authorization: `Bearer ${token}`} }
+    );
+
+    return response.data;
+  }
+
+  const showMap = async () => {
+    const data = getMap();
+    data.then(response => {
+      const responses = response
+
+      for (var i = 0; i < responses.length; i++){
+        const id = "" + responses.map_id;
+        const newNode = {
+          id: id,
+          data: { label: responses.data },
+          position: {
+            x: responses.x,
+            y: responses.y,
+          },
+        };
+
+        setNodes((nds) => nds.concat(newNode));
+      }
+    })
+  }
+
   const onAdd = useCallback(
     (data) => {
       const token = localStorage.getItem("token");
-      const dates = "" + Date.now();
 
       const response = axios.post(
         "http://localhost:8000/add-map/",
