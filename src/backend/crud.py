@@ -134,6 +134,13 @@ def get_notes(db: Session, email: EmailStr):
     user = get_user_by_email(db, email)
     return db.query(models.Notes).filter(models.Notes.user_id == user.id).all()
 
+def get_notes_last(db: Session, email: EmailStr):
+    user = get_user_by_email(db, email)
+    db_notes = db.query(models.Notes).filter(models.Notes.user_id == user.id).all()
+    for item in db_notes:
+        items = item
+    return items
+
 def delete_notes(db: Session, notes_id: int):
     db_note = db.query(models.Notes).filter(models.Notes.notes_id == notes_id).first()
     db.delete(db_note)
@@ -151,9 +158,9 @@ def update_notes(db: Session, payload: schemas.GetNotes):
     db.refresh(db_notes)
     return db_notes
 
-def add_map(db: Session, data: str, x: int, y: int, source: int, target: int, email: EmailStr):
+def add_map(db: Session, data: str, x: int, y: int, email: EmailStr):
     user = get_user_by_email(db, email)
-    db_map = models.Map(data = data, x = x, y = y, source = source, target = target, user_id = user.id)
+    db_map = models.Map(data = data, x = x, y = y, user_id = user.id)
     db.add(db_map)
     db.commit()
     return db_map
@@ -161,3 +168,16 @@ def add_map(db: Session, data: str, x: int, y: int, source: int, target: int, em
 def get_map(db: Session, email: EmailStr):
     user = get_user_by_email(db, email)
     return db.query(models.Map).filter(models.Map.user_id == user.id).all()
+
+def get_map_last(db: Session, email: EmailStr):
+    user = get_user_by_email(db, email)
+    db_map = db.query(models.Map).filter(models.Map.user_id == user.id).all()
+    for item in db_map:
+        items = item
+    return items
+
+def delete_map(db: Session, map_id: int):
+    db_map = db.query(models.Map).filter(models.Map.map_id == map_id).first()
+    db.delete(db_map)
+    db.commit()
+    return db_map

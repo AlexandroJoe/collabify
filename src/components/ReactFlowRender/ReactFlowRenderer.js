@@ -10,6 +10,7 @@ import ReactFlow, {
 import { nodes as initialNodes, edges as initialEdges } from "./elements";
 import { Button, Modal, Input, Form, Dropdown, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import axios from 'axios';
 
 function ReactFlowRenderer() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -54,12 +55,28 @@ function ReactFlowRenderer() {
 
   const onAdd = useCallback(
     (data) => {
+      const token = localStorage.getItem("token");
+      const dates = "" + Date.now();
+
+      const response = axios.post(
+        "http://localhost:8000/add-map/",
+        { data: data, x: 50, y: 0 },
+        { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
+      );
+
+      const responses = axios.get(
+        "http://localhost:8000/get-map-last/",
+        { headers: {Authorization: `Bearer ${token}`} }
+      );
+
+      const id = "" + responses.map_id
+
       const newNode = {
-        id: String(getNodeId()),
-        data: { label: data },
+        id: id,
+        data: { label: responses.data },
         position: {
-          x: 50,
-          y: 0,
+          x: responses.x,
+          y: responses.y,
         },
       };
       setNodes((nds) => nds.concat(newNode));
@@ -68,6 +85,16 @@ function ReactFlowRenderer() {
   );
 
   function handleDelete(nodeId) {
+    const token = localStorage.getItem("token");
+    const response = fetch("http://localhost:8000/delete-map/", {
+      method: "DELETE",
+      body: JSON.stringify({map_id: nodeId}),
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+    });
+
     console.log(nodeId);
     setNodes((nds) => nds.filter((node) => node.id !== nodeId));
     setEdges((eds) =>

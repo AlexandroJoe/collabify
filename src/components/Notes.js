@@ -51,11 +51,18 @@ function Notes({ handleLogout }) {
       { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
     );
 
+    const responses = await axios.get(
+      "http://localhost:8000/get-notes-last/",
+      { headers: {Authorization: `Bearer ${token}`} }
+    );
+
+    const todate = parseInt(responses.time)
+
     const newNote = {
-      id: uuid(),
-      title: "Untitled Note",
-      body: "",
-      lastModified: Date.now(),
+      id: responses.notes_id,
+      title: responses.title,
+      body: responses.body,
+      lastModified: todate,
     };
 
     setNotes([newNote, ...notes]); // transferring every new note into our notes

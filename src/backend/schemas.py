@@ -74,5 +74,13 @@ class Map(BaseModel):
     data: str
     x: int
     y: int
+    
+    class Config:
+        orm_mode = True
+    
+class MapSource(BaseModel):
     source: int
     target: int
+        
+class DeleteMap(BaseModel):
+    map_id: int

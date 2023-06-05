@@ -189,6 +189,13 @@ def get_notes(
 ):
     return crud.get_notes(session, token_data.email)
 
+@collabify.get("/get-notes-last")
+def get_notes_last(
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.get_notes_last(session, token_data.email)
+
 @collabify.put("/update-notes/", response_model = schemas.Notes)
 def update_notes(
     payload: schemas.GetNotes,
@@ -211,7 +218,7 @@ def add_map(
     token_data: schemas.TokenData = Depends(get_current_user),
     session: Session = Depends(get_db)
 ):
-    return crud.add_map(session, payload.data, payload.x, payload.y, payload.source, payload.target, token_data.email)
+    return crud.add_map(session, payload.data, payload.x, payload.y, token_data.email)
     
 @collabify.get("/get-map/")
 def get_map(
@@ -219,3 +226,18 @@ def get_map(
     session: Session = Depends(get_db)
 ):
     return crud.get_map(session, token_data.email)
+
+@collabify.get("/get-map-last")
+def get_map_last(
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.get_map_last(session, token_data.email)
+
+@collabify.delete("/delete-map/")
+def delete_map(
+    payload: schemas.DeleteMap,
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.delete_map(session, payload.map_id)
