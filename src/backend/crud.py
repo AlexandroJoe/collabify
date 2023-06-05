@@ -76,6 +76,13 @@ def get_todo(db: Session, email: EmailStr):
     user = get_user_by_email(db, email)
     return db.query(models.Todo).filter(models.Todo.user_id == user.id).all()
 
+def get_todo_last(db: Session, email: EmailStr):
+    user = get_user_by_email(db, email)
+    db_todo = db.query(models.Todo).filter(models.Todo.user_id == user.id).all()
+    for item in db_todo:
+        items = item
+    return items
+
 def get_todo_title(db: Session, title: str, email: EmailStr):
     user = get_user_by_email(db, email)
     return db.query(models.Todo).filter(models.Todo.title == title, models.Todo.user_id == user.id).all()

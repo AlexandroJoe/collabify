@@ -37,7 +37,6 @@ function Notes({ handleLogout }) {
         };
 
         setNotes((prevNotes) => [newNote, ...prevNotes]);
-        console.log(notes)
       }
     })
   }

@@ -143,6 +143,13 @@ def get_todo(
 ):
     return crud.get_todo(session, token_data.email)
 
+@collabify.get("/get-todo-last")
+def get_todo_last(
+    token_data: schemas.TokenData = Depends(get_current_user),
+    session: Session = Depends(get_db)
+):
+    return crud.get_todo_last(session, token_data.email)
+
 @collabify.get("/get-todo-title/")
 def get_todo_title(
     title: str,

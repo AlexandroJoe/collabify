@@ -187,10 +187,17 @@ function TodoList({ handleLogout }) {
       { headers: { "content-type": "application/json", Authorization: `Bearer ${token}`} }
     );
 
+    const responses = await axios.get(
+      "http://localhost:8000/get-todo-last/",
+      { headers: {Authorization: `Bearer ${token}`} }
+    );
+
+    const id = "" + responses.data.todo_id;
+
     const newItem = {
-      id: uuid(),
-      name: name,
-      dueDate: dueDate,
+      id: id,
+      name: responses.data.name,
+      dueDate: responses.data.duedate,
     };
 
     setState((prev) => {
