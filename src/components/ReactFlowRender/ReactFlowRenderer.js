@@ -69,14 +69,14 @@ function ReactFlowRenderer() {
         { headers: {Authorization: `Bearer ${token}`} }
       );
 
-      const id = "" + responses.map_id
+      const id = "" + responses.data.map_id
 
       const newNode = {
         id: id,
-        data: { label: responses.data },
+        data: { label: responses.data.data },
         position: {
-          x: responses.x,
-          y: responses.y,
+          x: responses.data.x,
+          y: responses.data.y,
         },
       };
       setNodes((nds) => nds.concat(newNode));

@@ -56,12 +56,12 @@ function Notes({ handleLogout }) {
       { headers: {Authorization: `Bearer ${token}`} }
     );
 
-    const todate = parseInt(responses.time)
+    const todate = parseInt(responses.data.time)
 
     const newNote = {
-      id: responses.notes_id,
-      title: responses.title,
-      body: responses.body,
+      id: responses.data.notes_id,
+      title: responses.data.title,
+      body: responses.data.body,
       lastModified: todate,
     };
 

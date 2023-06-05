@@ -38,7 +38,6 @@ const Sidebar = ({
   }, [setActiveNote]);
 
   useEffect(() => {
-    console.log(activeNote)
     const filteredNotes = notes.filter((note) =>
       note.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -54,6 +53,10 @@ const Sidebar = ({
   };
 
   const highlightMatchingLetters = (title, query) => {
+    if (!query || query.trim() === "") {
+      return title;
+    }
+
     const highlightedTitle = [];
     let i = 0;
     let j = 0;
