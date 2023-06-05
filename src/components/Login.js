@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import logo from "./logo.png";
 import { useNavigate } from "react-router-dom";
-import "./Login.css"
-
+import "./Login.css";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Login = (props) => {
   const {
@@ -91,10 +91,25 @@ const Login = (props) => {
   const goBack = () => {
     navigate("/", { replace: true });
     console.log("hello");
-  }
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleToggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const isSignUpDisabled =
-    hasAccount || emailErrorSU || passwordErrorSU || confirmError || !email ||
+    hasAccount ||
+    emailErrorSU ||
+    passwordErrorSU ||
+    confirmError ||
+    !email ||
     !password ||
     !confirmPassword;
 
@@ -118,12 +133,22 @@ const Login = (props) => {
             />
             {showError && <p className="errorMsg">{emailError}</p>}
             <label>Password</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={handlePasswordChange}
-            />
+            <div className="password-input-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <button
+                className={`toggle-password-button ${
+                  showPassword ? "show" : ""
+                }`}
+                onClick={handleTogglePassword}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
             {showError && <p className="errorMsg">{passwordError}</p>}
           </>
         ) : (
@@ -141,25 +166,43 @@ const Login = (props) => {
               <p className="errorMsgSU">{emailErrorSU}</p>
             )}
             <label>Password</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={handlePasswordChange}
-            />
+            <div className="password-input-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <button
+                className={`toggle-password-button ${
+                  showPassword ? "show" : ""
+                }`}
+                onClick={handleTogglePassword}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
             {!hasAccount && password && (
               <p className="errorMsgSU">{passwordErrorSU}</p>
             )}
             <label>Confirm Password</label>
-            <input
-              type="password"
-              required
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-            />
-            {confirmPassword && (
-              <p className="errorMsg">{confirmError}</p>
-            )}
+            <div className="password-input-container">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                required
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+              />
+              <button
+                className={`toggle-password-button ${
+                  showConfirmPassword ? "show" : ""
+                }`}
+                onClick={handleToggleConfirmPassword}
+              >
+                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
+            {confirmPassword && <p className="errorMsg">{confirmError}</p>}
           </>
         )}
         <div className="btnContainer">
