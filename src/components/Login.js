@@ -90,7 +90,7 @@ const Login = (props) => {
 
   const goBack = () => {
     navigate("/", { replace: true });
-    console.log("hello");
+    setHasAccount(true);
   };
 
   const [showPassword, setShowPassword] = useState(false);
